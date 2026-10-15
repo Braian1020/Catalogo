@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POOLSTORE | Tu tienda virtual de confianza</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: #ffffff; color: #171717; line-height: 1.5; padding-bottom: 95px; }
+    header { position: sticky; top: 0; background: #ffffff; border-bottom: 1px solid #e5e5e5; z-index: 30; }
+    .header-container { max-width: 1200px; margin: 0 auto; padding: 0 16px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo-box { display: flex; flex-direction: column; }
+    .logo { font-size: 20px; font-weight: 900; letter-spacing: 2px; text-decoration: none; color: #0a0a0a; line-height: 1; }
+    .logo-sub { font-size: 11px; color: #737373; font-style: italic; font-weight: 600; margin-top: 2px; }
+    .nav-actions { display: flex; align-items: center; gap: 14px; }
+    .btn-link { background: none; border: none; font-size: 13px; font-weight: 600; color: #525252; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+    .btn-pedido { background: #0a0a0a; color: #ffffff; border: none; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    .badge-count { background: #ffffff; color: #0a0a0a; padding: 2px 6px; border-radius: 10px; font-size: 11px; font-weight: 800; }
+    
+    .hero { max-width: 1200px; margin: 0 auto; padding: 24px 16px 8px; }
+    .hero-top { display: flex; flex-direction: column; gap: 12px; }
+    @media(min-width: 768px) { .hero-top { flex-direction: row; justify-content: space-between; align-items: flex-end; } }
+    .hero h1 { font-size: 28px; font-weight: 800; color: #0a0a0a; }
+    .hero p { font-size: 13px; color: #737373; margin-top: 2px; }
+    
+    .precios-bar { display: flex; align-items: center; gap: 10px; background: #fafafa; border: 1px solid #e5e5e5; border-radius: 10px; padding: 8px 14px; font-size: 12px; align-self: flex-start; }
+    .precios-bar .item { text-align: center; }
+    .precios-bar .item span { display: block; font-size: 10px; color: #737373; }
+    .precios-bar .item strong { font-size: 14px; color: #0a0a0a; font-weight: 800; }
+    .precios-bar .sep { width: 1px; height: 24px; background: #e5e5e5; }
+
+    .delivery-cards { max-width: 1200px; margin: 12px auto; padding: 0 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; font-size: 12px; }
+    .d-card { padding: 10px 12px; border-radius: 10px; border: 1px solid #e5e5e5; background: #fafafa; display: flex; gap: 10px; align-items: flex-start; }
+    .d-card.green { background: #ecfdf5; border-color: #a7f3d0; }
+    .d-card strong { display: block; font-weight: 800; font-size: 12px; color: #064e3b; }
+    .d-card p { font-size: 11px; color: #4b5563; margin-top: 2px; }
+
+    .grid { max-width: 1200px; margin: 0 auto; padding: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+    .card { background: #ffffff; border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; transition: box-shadow 0.2s; position: relative; }
+    .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+    .card-img-wrap { width: 100%; aspect-ratio: 3/2; background: #fafafa; display: flex; align-items: center; justify-content: center; padding: 12px; cursor: pointer; position: relative; }
+    .card-img-wrap img { width: 100%; height: 100%; object-fit: contain; }
+    .price-tag { position: absolute; top: 10px; right: 10px; background: #0a0a0a; color: #ffffff; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px; }
+    .card-content { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .card-title { font-size: 15px; font-weight: 700; text-transform: capitalize; color: #0a0a0a; }
+    .card-desc { font-size: 12px; color: #a3a3a3; }
+    .size-label { display: flex; justify-content: space-between; font-size: 12px; color: #737373; }
+    .size-buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 6px; }
+    .size-btn { padding: 6px 0; border: 1px solid #e5e5e5; background: #ffffff; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; color: #404040; text-align: center; }
+    .size-btn.active { background: #0a0a0a; color: #ffffff; border-color: #0a0a0a; }
+    .actions { display: flex; gap: 8px; border-top: 1px solid #f5f5f5; padding-top: 12px; }
+    .qty-wrap { display: flex; border: 1px solid #d4d4d4; border-radius: 6px; background: #fafafa; overflow: hidden; }
+    .qty-btn { border: none; background: none; padding: 6px 10px; font-weight: 700; cursor: pointer; }
+    .qty-num { display: flex; align-items: center; padding: 0 6px; font-size: 12px; font-weight: 700; }
+    .add-btn { flex: 1; border: none; background: #0a0a0a; color: #ffffff; font-size: 12px; font-weight: 700; border-radius: 6px; cursor: pointer; padding: 8px; }
+    .add-btn:hover { background: #262626; }
+    
+    .floating-ws { position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; background: #25D366; color: #ffffff; border-radius: 50%; box-shadow: 0 4px 14px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; text-decoration: none; z-index: 40; }
+    .floating-ws svg { width: 32px; height: 32px; fill: currentColor; }
+    
+    .cart-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #0a0a0a; color: #ffffff; padding: 12px 16px; display: none; align-items: center; justify-content: space-between; z-index: 35; }
+    .cart-bar.active { display: flex; }
+    .btn-enviar-ws { background: #25D366; color: #ffffff; border: none; border-radius: 8px; padding: 10px 16px; font-size: 13px; font-weight: 700; cursor: pointer; }
+    
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 50; align-items: center; justify-content: center; padding: 16px; }
+    .modal.active { display: flex; }
+    .modal-box { background: #ffffff; border-radius: 16px; max-width: 520px; width: 100%; max-height: 92vh; overflow-y: auto; padding: 20px; position: relative; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e5e5; padding-bottom: 12px; }
+    .close-btn { background: none; border: none; font-size: 18px; cursor: pointer; font-weight: 700; color: #737373; }
+    
+    .cart-item { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 8px; background: #fafafa; border: 1px solid #eee; margin-bottom: 8px; }
+    .cart-item img { width: 50px; height: 38px; object-fit: contain; }
+    .cart-item-info { flex: 1; font-size: 12px; }
+    .cart-item-title { font-weight: 700; }
+    .del-btn { background: none; border: none; color: #dc2626; font-size: 14px; cursor: pointer; }
+
+    .section-title { font-size: 12px; font-weight: 800; text-transform: uppercase; margin: 16px 0 8px; color: #171717; }
+    .deliv-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
+    .deliv-tab { padding: 8px 4px; border: 1px solid #e5e5e5; background: #f5f5f5; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; color: #525252; }
+    .deliv-tab.active { background: #0a0a0a; color: #ffffff; border-color: #0a0a0a; }
+    .deliv-tab.active.green { background: #047857; border-color: #047857; }
+    
+    .option-box { background: #fafafa; border: 1px solid #e5e5e5; border-radius: 10px; padding: 12px; font-size: 12px; }
+    .option-box.green { background: #ecfdf5; border-color: #a7f3d0; }
+    .zone-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 6px; }
+    .zone-btn { padding: 6px; border: 1px solid #d4d4d4; background: #ffffff; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; text-align: left; }
+    .zone-btn.active { background: #047857; color: #ffffff; border-color: #047857; }
+    .input-text { width: 100%; padding: 8px; border: 1px solid #d4d4d4; border-radius: 6px; font-size: 12px; margin-top: 6px; }
+    
+    .msg-preview { background: #f5f5f5; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 11px; white-space: pre-wrap; margin-top: 12px; max-height: 140px; overflow-y: auto; }
+    .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #0a0a0a; color: #ffffff; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; display: none; z-index: 60; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <!-- Cabecera -->
+  <header>
+    <div class="header-container">
+      <div class="logo-box">
+        <a href="#" class="logo">POOLSTORE</a>
+        <span class="logo-sub">Tu tienda virtual de confianza.</span>
+      </div>
+      <div class="nav-actions">
+        <button class="btn-link" onclick="abrirGuiaTallas()">Guía de Tallas</button>
+        <button class="btn-pedido" onclick="abrirModalPedido()">
+          Mi Pedido <span class="badge-count" id="badge-total">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mensaje flotante -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Hero y Precios -->
+  <section class="hero">
+    <div class="hero-top">
+      <div>
+        <h1>Shorts Deportivos</h1>
+        <p>36 colores disponibles · Tallas XS a XL · Elige tu talla y arma tu pedido</p>
+      </div>
+      <div class="precios-bar">
+        <div class="item">
+          <span>1 short</span>
+          <strong>S/ 15</strong>
+        </div>
+        <div class="sep"></div>
+        <div class="item">
+          <span>6 shorts</span>
+          <strong>S/ 81</strong>
+        </div>
+        <div class="sep"></div>
+        <div class="item">
+          <span>12 shorts</span>
+          <strong style="color: #047857;">S/ 144</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tarjetas de Entrega -->
+  <div class="delivery-cards">
+    <div class="d-card green">
+      <span style="font-size: 18px;">🛵</span>
+      <div>
+        <strong>DELIVERY GRATIS desde 3 shorts</strong>
+        <p>Chiclayo, JLO, Lambayeque y La Victoria.</p>
+      </div>
+    </div>
+    <div class="d-card">
+      <span style="font-size: 18px;">📍</span>
+      <div>
+        <strong style="color: #171717;">PUNTOS DE ENTREGA desde 1 short</strong>
+        <p>Catedral de Chiclayo, Plaza Cívica JLO o Las Musas.</p>
+      </div>
+    </div>
+    <div class="d-card">
+      <span style="font-size: 18px;">📦</span>
+      <div>
+        <strong style="color: #171717;">ENVÍOS POR SHALOM</strong>
+        <p>A todo el Perú. Costo coordinado por WhatsApp.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cuadrícula de Shorts -->
+  <main class="grid" id="shorts-grid"></main>
+
+  <!-- Barra flotante de pedido -->
+  <div class="cart-bar" id="cart-bar">
+    <div>
+      <strong id="bar-prendas-text">0 shorts seleccionados</strong>
+      <div style="font-size: 11px; color: #a3a3a3;" id="bar-status-delivery">📍 Puntos de entrega</div>
+    </div>
+    <button class="btn-enviar-ws" onclick="abrirModalPedido()">Ver Pedido y Entrega →</button>
+  </div>
+
+  <!-- Botón flotante para consultar por WhatsApp -->
+  <a class="floating-ws" href="https://wa.me/51903566655?text=Hola%20PoolStore%20%F0%9F%91%8B%2C%20tengo%20una%20consulta%20sobre%20sus%20shorts%20deportivos" target="_blank" rel="noopener noreferrer" title="Hablar por WhatsApp (903 566 655)">
+    <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+  </a>
+
+  <!-- Modal Pedido y Entrega -->
+  <div class="modal" id="modal-pedido" onclick="cerrarModalPedido()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <h3>Tu Pedido PoolStore</h3>
+          <p style="font-size: 12px; color: #737373;" id="modal-subtotal-text">0 shorts</p>
+        </div>
+        <button class="close-btn" onclick="cerrarModalPedido()">✕</button>
+      </div>
+
+      <div id="lista-pedido" style="margin-top: 10px;"></div>
+
+      <div id="costos-box" style="background: #fafafa; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px; margin: 10px 0; font-size: 12px;"></div>
+
+      <div class="section-title">Modalidad de Entrega</div>
+      <div class="deliv-tabs">
+        <button class="deliv-tab" id="tab-delivery" onclick="setTipoEntrega('delivery')">🛵 Delivery</button>
+        <button class="deliv-tab active" id="tab-punto" onclick="setTipoEntrega('punto')">📍 Puntos Fijos</button>
+        <button class="deliv-tab" id="tab-shalom" onclick="setTipoEntrega('shalom')">📦 Shalom</button>
+      </div>
+
+      <div id="delivery-options-container"></div>
+
+      <div class="section-title">Mensaje para enviar al 903 566 655</div>
+      <div id="preview-msg" class="msg-preview"></div>
+
+      <button class="btn-enviar-ws" style="width: 100%; margin-top: 14px; padding: 14px;" onclick="enviarPedidoWhatsApp()">
+        Enviar pedido por WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal Guía de Tallas -->
+  <div class="modal" id="modal-tallas" onclick="cerrarGuiaTallas()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Guía de Tallas</h3>
+        <button class="close-btn" onclick="cerrarGuiaTallas()">✕</button>
+      </div>
+      <div style="margin-top: 14px; font-size: 13px;">
+        <p style="padding: 6px 0; border-bottom: 1px solid #f0f0f0;"><strong>XS:</strong> Talla 36</p>
+        <p style="padding: 6px 0; border-bottom: 1px solid #f0f0f0;"><strong>S:</strong> Talla 38</p>
+        <p style="padding: 6px 0; border-bottom: 1px solid #f0f0f0;"><strong>M:</strong> Talla 40</p>
+        <p style="padding: 6px 0; border-bottom: 1px solid #f0f0f0;"><strong>L:</strong> Talla 42</p>
+        <p style="padding: 6px 0;"><strong>XL:</strong> Talla 44</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const WHATSAPP_NUM = "51903566655";
+    const TALLAS = ['XS', 'S', 'M', 'L', 'XL'];
+    const ZONAS_DELIVERY = ['José Leonardo Ortiz (JLO)', 'Chiclayo', 'Lambayeque', 'La Victoria'];
+    const PUNTOS_ENTREGA = ['La Catedral de Chiclayo', 'Plaza Cívica de JLO', 'Las Musas – Chiclayo'];
+
+    let pedido = [];
+    let stateTallas = {};
+    let stateCantidades = {};
+    let tipoEntrega = 'punto';
+    let zonaDelivery = 'Chiclayo';
+    let direccionDelivery = '';
+    let puntoSeleccionado = 'La Catedral de Chiclayo';
+    let destinoShalom = '';
+
+    fetch('/src/data/shorts.json')
+      .then(res => res.json())
+      .then(data => renderCatalogo(data))
+      .catch(() => console.log("Cargando lista..."));
+
+    function calcularPrecios(qty) {
+      if (qty <= 0) return { total: 0, tag: '' };
+      if (qty >= 12) return { total: qty * 12, tag: 'Precio Docena (S/ 12 c/u)' };
+      if (qty >= 6) return { total: qty * 13.5, tag: 'Promo 6+ shorts (S/ 13.50 c/u)' };
+      return { total: qty * 15, tag: 'S/ 15 c/u' };
+    }
+
+    function renderCatalogo(shorts) {
+      const grid = document.getElementById('shorts-grid');
+      grid.innerHTML = '';
+
+      shorts.forEach(short => {
+        stateTallas[short.id] = stateTallas[short.id] || 'M';
+        stateCantidades[short.id] = stateCantidades[short.id] || 1;
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="card-img-wrap">
+            <img src="${short.image}" alt="${short.title}" loading="lazy">
+            <span class="price-tag">S/ 15</span>
+          </div>
+          <div class="card-content">
+            <div>
+              <div class="card-title">${short.title}</div>
+              <div class="card-desc">Short deportivo con cordón</div>
+            </div>
+            <div>
+              <div class="size-label">
+                <span>Talla:</span>
+                <strong id="label-talla-${short.id}">${stateTallas[short.id]}</strong>
+              </div>
+              <div class="size-buttons" id="sizes-${short.id}">
+                ${TALLAS.map(t => `
+                  <button class="size-btn ${t === stateTallas[short.id] ? 'active' : ''}" 
+                    onclick="setTalla('${short.id}', '${t}')">${t}</button>
+                `).join('')}
+              </div>
+            </div>
+            <div class="actions">
+              <div class="qty-wrap">
+                <button class="qty-btn" onclick="cambiarQty('${short.id}', -1)">-</button>
+                <span class="qty-num" id="qty-${short.id}">${stateCantidades[short.id]}</span>
+                <button class="qty-btn" onclick="cambiarQty('${short.id}', 1)">+</button>
+              </div>
+              <button class="add-btn" onclick="agregarItem('${short.id}', '${short.title}', '${short.image}')">
+                Agregar
+              </button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function setTalla(id, t) {
+      stateTallas[id] = t;
+      document.getElementById('label-talla-' + id).textContent = t;
+      const btns = document.querySelectorAll('#sizes-' + id + ' .size-btn');
+      btns.forEach(b => b.classList.toggle('active', b.textContent.trim() === t));
+    }
+
+    function cambiarQty(id, delta) {
+      let actual = stateCantidades[id] || 1;
+      actual = Math.max(1, actual + delta);
+      stateCantidades[id] = actual;
+      document.getElementById('qty-' + id).textContent = actual;
+    }
+
+    function agregarItem(id, title, image) {
+      const talla = stateTallas[id] || 'M';
+      const cantidad = stateCantidades[id] || 1;
+      const exist = pedido.find(p => p.id === id && p.talla === talla);
+      if (exist) {
+        exist.cantidad += cantidad;
+      } else {
+        pedido.push({ id, title, image, talla, cantidad });
+      }
+      stateCantidades[id] = 1;
+      const elQty = document.getElementById('qty-' + id);
+      if (elQty) elQty.textContent = '1';
+
+      const total = pedido.reduce((acc, p) => acc + p.cantidad, 0);
+      if (total >= 3 && tipoEntrega === 'punto') {
+        tipoEntrega = 'delivery';
+      }
+
+      actualizarBarra();
+      mostrarToast(`¡Agregado ${title} (${talla})!`);
+    }
+
+    function actualizarBarra() {
+      const total = pedido.reduce((acc, p) => acc + p.cantidad, 0);
+      const { total: precioTotal } = calcularPrecios(total);
+      document.getElementById('badge-total').textContent = total;
+      const bar = document.getElementById('cart-bar');
+      if (total > 0) {
+        bar.classList.add('active');
+        document.getElementById('bar-prendas-text').textContent = `${total} ${total === 1 ? 'short' : 'shorts'} · S/ ${precioTotal}`;
+        const delivText = total >= 3 ? '🛵 ¡Delivery GRATIS habilitado!' : `📍 Faltan ${3 - total} para Delivery GRATIS`;
+        document.getElementById('bar-status-delivery').textContent = delivText;
+      } else {
+        bar.classList.remove('active');
+      }
+    }
+
+    function setTipoEntrega(tipo) {
+      const total = pedido.reduce((acc, p) => acc + p.cantidad, 0);
+      if (tipo === 'delivery' && total < 3) {
+        mostrarToast('¡Delivery gratis a partir de 3 unidades!');
+        return;
+      }
+      tipoEntrega = tipo;
+      renderOpcionesEntrega();
+      actualizarPreview();
+    }
+
+    function renderOpcionesEntrega() {
+      const total = pedido.reduce((acc, p) => acc + p.cantidad, 0);
+      const container = document.getElementById('delivery-options-container');
+
+      document.getElementById('tab-delivery').className = `deliv-tab ${tipoEntrega === 'delivery' ? 'active green' : ''}`;
+      document.getElementById('tab-punto').className = `deliv-tab ${tipoEntrega === 'punto' ? 'active' : ''}`;
+      document.getElementById('tab-shalom').className = `deliv-tab ${tipoEntrega === 'shalom' ? 'active' : ''}`;
+
+      if (tipoEntrega === 'delivery' && total >= 3) {
+        container.innerHTML = `
+          <div class="option-box green">
+            <strong>Selecciona tu zona de Delivery GRATIS:</strong>
+            <div class="zone-grid">
+              ${ZONAS_DELIVERY.map(z => `
+                <button class="zone-btn ${zonaDelivery === z ? 'active' : ''}" onclick="setZona('${z}')">✓ ${z}</button>
+              `).join('')}
+            </div>
+            <input type="text" class="input-text" placeholder="Dirección o referencia (opcional)" value="${direccionDelivery}" oninput="setDireccion(this.value)">
+          </div>
+        `;
+      } else if (tipoEntrega === 'delivery' && total < 3) {
+        container.innerHTML = `
+          <div class="option-box">
+            <strong>Delivery gratis disponible desde 3 shorts.</strong>
+            <p style="margin-top: 4px; color: #737373;">Tienes ${total}. Agrega ${3 - total} más para delivery gratis a Chiclayo, JLO, Lambayeque o La Victoria.</p>
+          </div>
+        `;
+      } else if (tipoEntrega === 'punto') {
+        container.innerHTML = `
+          <div class="option-box">
+            <strong>Selecciona tu punto de entrega:</strong>
+            <div style="margin-top: 6px;">
+              ${PUNTOS_ENTREGA.map(pt => `
+                <label style="display: flex; align-items: center; gap: 8px; padding: 6px 0; cursor: pointer;">
+                  <input type="radio" name="pt_opt" value="${pt}" ${puntoSeleccionado === pt ? 'checked' : ''} onchange="setPunto('${pt}')">
+                  <span>${pt}</span>
+                </label>
+              `).join('')}
+            </div>
+            <p style="font-size: 11px; color: #737373; font-style: italic; margin-top: 4px;">* Los horarios se coordinan por WhatsApp.</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="option-box">
+            <strong>Envíos a otros destinos por Shalom:</strong>
+            <input type="text" class="input-text" placeholder="Ciudad o destino (ej: Piura, Trujillo, Lima...)" value="${destinoShalom}" oninput="setDestinoShalom(this.value)">
+            <p style="font-size: 11px; color: #737373; font-style: italic; margin-top: 4px;">* Costo de envío se coordina por WhatsApp.</p>
+          </div>
+        `;
+      }
+    }
+
+    function setZona(z) { zonaDelivery = z; renderOpcionesEntrega(); actualizarPreview(); }
+    function setDireccion(d) { direccionDelivery = d; actualizarPreview(); }
+    function setPunto(p) { puntoSeleccionado = p; actualizarPreview(); }
+    function setDestinoShalom(d) { destinoShalom = d; actualizarPreview(); }
+
+    function abrirModalPedido() {
+      const modal = document.getElementById('modal-pedido');
+      const list = document.getElementById('lista-pedido');
+      const total = pedido.reduce((acc, p) => acc + p.cantidad, 0);
+      const { total: precioTotal, tag } = calcularPrecios(total);
+
+      document.getElementById('modal-subtotal-text').textContent = `${total} shorts · Total: S/ ${precioTotal}`;
+      document.getElementById('costos-box').innerHTML = `
+        <div style="display: flex; justify-content: space-between;"><span>Total prendas:</span> <strong>${total}</strong></div>
+        <div style="display: flex; justify-content: space-between; font-size: 14px; margin-top: 4px;"><span>Total a pagar:</span> <strong style="color: #047857;">S/ ${precioTotal}</strong></div>
+        ${tag ? `<div style="font-size: 11px; color: #737373; margin-top: 2px;">${tag}</div>` : ''}
+      `;
+
+      if (pedido.length === 0) {
+        list.innerHTML = '<p style="text-align: center; color: #737373; font-size: 13px;">No hay productos en tu pedido.</p>';
+      } else {
+        list.innerHTML = pedido.map((p, idx) => `
+          <div class="cart-item">
+            <img src="${p.image}">
+            <div class="cart-item-info">
+              <div class="cart-item-title">${p.title}</div>
+              <div style="color: #737373;">Talla: <strong>${p.talla}</strong> · Cantidad: <strong>${p.cantidad}</strong></div>
+            </div>
+            <button class="del-btn" onclick="quitarItem(${idx})">✕</button>
+          </div>
+        `).join('');
+      }
+
+      renderOpcionesEntrega();
+      actualizarPreview();
+      modal.classList.add('active');
+    }
+
+    function quitarItem(idx) {
+      pedido.splice(idx, 1);
+      actualizarBarra();
+      abrirModalPedido();
+    }
+
+    function cerrarModalPedido() {
+      document.getElementById('modal-pedido').classList.remove('active');
+    }
+
+    function abrirGuiaTallas() {
+      document.getElementById('modal-tallas').classList.add('active');
+    }
+
+    function cerrarGuiaTallas() {
+      document.getElementById('modal-tallas').classList.remove('active');
+    }
+
+    function generarMensaje() {
+      if (pedido.length === 0) return '';
+      const total = pedido.reduce((acc, p) => acc + p.cantidad, 0);
+      const { total: precioTotal } = calcularPrecios(total);
+
+      let msg = "Hola PoolStore 👋, quiero realizar el siguiente pedido:\n\n";
+      pedido.forEach(p => {
+        const nombre = p.title.startsWith('Short') ? p.title : `Short ${p.title}`;
+        msg += `🩳 ${nombre}\nTalla: ${p.talla}\nCantidad: ${p.cantidad}\n\n`;
+      });
+
+      msg += `💰 Total: S/ ${precioTotal} (${total} ${total === 1 ? 'short' : 'shorts'})\n`;
+
+      if (tipoEntrega === 'delivery' && total >= 3) {
+        const ref = direccionDelivery.trim() ? ` (Dirección: ${direccionDelivery.trim()})` : '';
+        msg += `🛵 Modalidad de entrega: Delivery GRATIS en ${zonaDelivery}${ref}\n\n`;
+      } else if (tipoEntrega === 'shalom') {
+        const dest = destinoShalom.trim() ? ` a ${destinoShalom.trim()}` : '';
+        msg += `📦 Modalidad de entrega: Envío por Shalom${dest} (Costo a coordinar)\n\n`;
+      } else {
+        msg += `📍 Modalidad de entrega: Punto de entrega - ${puntoSeleccionado} (Horario a coordinar)\n\n`;
+      }
+
+      msg += "¿Me confirmas la disponibilidad y el horario?";
+      return msg;
+    }
+
+    function actualizarPreview() {
+      document.getElementById('preview-msg').textContent = generarMensaje();
+    }
+
+    function enviarPedidoWhatsApp() {
+      const msg = generarMensaje();
+      if (!msg) return;
+      window.open(`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function mostrarToast(txt) {
+      const toast = document.getElementById('toast');
+      toast.textContent = txt;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2200);
+    }
+  </script>
+</body>
+</html>

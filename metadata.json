@@ -1,0 +1,6 @@
+{
+  "name": "PoolStore - Catálogo Oficial de Shorts Deportivos",
+  "description": "Catálogo web interactivo y moderno de shorts deportivos PoolStore. Elige tus colores, tallas y envía tu pedido directo por WhatsApp.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
