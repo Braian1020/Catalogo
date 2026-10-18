@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { SHORTS } from './data/shorts';
 import { ShortProduct, Size } from './types';
 
@@ -69,6 +69,127 @@ function calcularTotales(cantidad: number): { total: number; precioUnitario: num
   }
 }
 
+// Componente optimizado y memoizado para cada tarjeta de producto
+interface TarjetaShortProps {
+  short: ShortProduct;
+  index: number;
+  tallaActual: Size;
+  cantidadActual: number;
+  onSeleccionarTalla: (id: string, talla: Size) => void;
+  onCambiarCantidad: (id: string, delta: number) => void;
+  onAgregar: (prod: ShortProduct) => void;
+  onVerImagen: (prod: ShortProduct) => void;
+}
+
+const TarjetaShort = React.memo(function TarjetaShort({
+  short,
+  index,
+  tallaActual,
+  cantidadActual,
+  onSeleccionarTalla,
+  onCambiarCantidad,
+  onAgregar,
+  onVerImagen,
+}: TarjetaShortProps) {
+  // Las primeras 3 imágenes cargan de inmediato con fetchPriority alta (Above the fold)
+  const isAboveFold = index < 3;
+
+  return (
+    <article className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-2xs hover:shadow-md transition-shadow duration-200 flex flex-col justify-between">
+      {/* Contenedor de Imagen de alta velocidad */}
+      <div
+        className="w-full aspect-[3/2] bg-neutral-50 flex items-center justify-center p-2.5 cursor-pointer relative group"
+        onClick={() => onVerImagen(short)}
+        title="Toca para ver en grande"
+      >
+        <img
+          src={short.image}
+          alt={short.title}
+          width={900}
+          height={600}
+          loading={isAboveFold ? 'eager' : 'lazy'}
+          fetchPriority={isAboveFold ? 'high' : 'low'}
+          decoding="async"
+          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200 pointer-events-none"
+        />
+        <span className="absolute top-3 right-3 bg-neutral-950 text-white font-extrabold text-xs px-2.5 py-1 rounded-md shadow-xs pointer-events-none">
+          S/ 15
+        </span>
+      </div>
+
+      {/* Info y Controles de Compra */}
+      <div className="p-4 flex flex-col gap-3">
+        <div>
+          <h2 className="font-bold text-base text-neutral-950 capitalize leading-snug">
+            {short.title}
+          </h2>
+          <p className="text-xs text-neutral-400 mt-0.5">
+            Short deportivo con cordón ajustable
+          </p>
+        </div>
+
+        {/* Selector de Talla táctil */}
+        <div>
+          <div className="flex justify-between text-xs text-neutral-600 mb-1.5 font-medium">
+            <span>Talla:</span>
+            <span className="font-bold text-neutral-950">{tallaActual}</span>
+          </div>
+
+          <div className="grid grid-cols-5 gap-1">
+            {TALLAS.map((talla) => (
+              <button
+                key={talla}
+                type="button"
+                onClick={() => onSeleccionarTalla(short.id, talla)}
+                className={`py-1.5 rounded-lg text-xs font-bold border transition-colors cursor-pointer ${
+                  tallaActual === talla
+                    ? 'bg-neutral-950 text-white border-neutral-950 shadow-xs'
+                    : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-100 hover:border-neutral-300'
+                }`}
+              >
+                {talla}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Cantidad y Botón de Agregar */}
+        <div className="flex items-center gap-2 pt-2 border-t border-neutral-100">
+          <div className="flex items-center border border-neutral-300 rounded-lg bg-neutral-50">
+            <button
+              type="button"
+              onClick={() => onCambiarCantidad(short.id, -1)}
+              className="px-2.5 py-1.5 text-neutral-700 hover:bg-neutral-200 font-bold text-sm cursor-pointer select-none"
+              title="Menos"
+            >
+              -
+            </button>
+            <span className="px-2 text-xs font-bold text-neutral-950 tabular-nums">
+              {cantidadActual}
+            </span>
+            <button
+              type="button"
+              onClick={() => onCambiarCantidad(short.id, 1)}
+              className="px-2.5 py-1.5 text-neutral-700 hover:bg-neutral-200 font-bold text-sm cursor-pointer select-none"
+              title="Más"
+            >
+              +
+            </button>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => onAgregar(short)}
+            className="flex-1 py-2 px-3 bg-neutral-950 hover:bg-neutral-800 active:scale-98 text-white text-xs font-bold rounded-lg transition-transform cursor-pointer"
+          >
+            Agregar ({tallaActual})
+          </button>
+        </div>
+      </div>
+    </article>
+  );
+});
+
 export default function App() {
   // Estado del pedido
   const [pedido, setPedido] = useState<ItemPedido[]>([]);
@@ -89,52 +210,62 @@ export default function App() {
   const [puntoSeleccionado, setPuntoSeleccionado] = useState<string>('La Catedral de Chiclayo');
   const [destinoShalom, setDestinoShalom] = useState<string>('');
 
-  // Cálculos globales
-  const totalPrendas = pedido.reduce((acc, it) => acc + it.cantidad, 0);
-  const { total: precioTotal, ahorro, promoTag } = calcularTotales(totalPrendas);
+  // Cálculos globales optimizados con useMemo
+  const totalPrendas = useMemo(() => pedido.reduce((acc, it) => acc + it.cantidad, 0), [pedido]);
+  const { total: precioTotal, ahorro, promoTag } = useMemo(() => calcularTotales(totalPrendas), [totalPrendas]);
   const deliveryGratisHabilitado = totalPrendas >= 3;
 
-  // Handlers para tarjetas
-  const getTalla = (id: string): Size => tallas[id] || 'M';
-  const getCantidad = (id: string): number => cantidades[id] || 1;
+  // Callbacks memoizados para evitar renders innecesarios en las 36 tarjetas
+  const handleSeleccionarTalla = useCallback((id: string, talla: Size) => {
+    setTallas((prev) => (prev[id] === talla ? prev : { ...prev, [id]: talla }));
+  }, []);
 
-  const handleSeleccionarTalla = (id: string, talla: Size) => {
-    setTallas((prev) => ({ ...prev, [id]: talla }));
-  };
-
-  const handleCambiarCantidad = (id: string, delta: number) => {
+  const handleCambiarCantidad = useCallback((id: string, delta: number) => {
     setCantidades((prev) => {
       const val = prev[id] || 1;
-      return { ...prev, [id]: Math.max(1, val + delta) };
+      const nuevo = Math.max(1, val + delta);
+      return val === nuevo ? prev : { ...prev, [id]: nuevo };
     });
-  };
+  }, []);
 
-  const handleAgregarAlPedido = (prod: ShortProduct) => {
-    const t = getTalla(prod.id);
-    const c = getCantidad(prod.id);
+  const handleAgregarAlPedido = useCallback((prod: ShortProduct) => {
+    setTallas((currTallas) => {
+      const t = currTallas[prod.id] || 'M';
+      setCantidades((currCant) => {
+        const c = currCant[prod.id] || 1;
 
-    setPedido((prev) => {
-      const idx = prev.findIndex((it) => it.producto.id === prod.id && it.talla === t);
-      if (idx > -1) {
-        const copia = [...prev];
-        copia[idx].cantidad += c;
-        return copia;
-      }
-      return [...prev, { producto: prod, talla: t, cantidad: c }];
+        setPedido((prev) => {
+          const idx = prev.findIndex((it) => it.producto.id === prod.id && it.talla === t);
+          if (idx > -1) {
+            const copia = [...prev];
+            copia[idx].cantidad += c;
+            return copia;
+          }
+          return [...prev, { producto: prod, talla: t, cantidad: c }];
+        });
+
+        return { ...currCant, [prod.id]: 1 };
+      });
+      return currTallas;
     });
 
-    // Resetear cantidad a 1 y mostrar aviso
-    setCantidades((prev) => ({ ...prev, [prod.id]: 1 }));
-    setToast(`¡Agregado ${prod.title} (Talla ${t})!`);
+    setToast(`¡Agregado ${prod.title}!`);
     setTimeout(() => setToast(null), 2400);
 
-    // Si alcanza 3 o más prendas y estaba en punto, habilitar delivery gratis
-    if (totalPrendas + c >= 3 && tipoEntrega === 'punto') {
-      setTipoEntrega('delivery');
-    }
-  };
+    setPedido((prev) => {
+      const count = prev.reduce((acc, it) => acc + it.cantidad, 0);
+      if (count >= 3) {
+        setTipoEntrega((curr) => (curr === 'punto' ? 'delivery' : curr));
+      }
+      return prev;
+    });
+  }, []);
 
-  const handleActualizarItem = (index: number, delta: number) => {
+  const handleVerImagen = useCallback((prod: ShortProduct) => {
+    setModalImagen(prod);
+  }, []);
+
+  const handleActualizarItem = useCallback((index: number, delta: number) => {
     setPedido((prev) => {
       const copia = [...prev];
       const n = copia[index].cantidad + delta;
@@ -142,23 +273,23 @@ export default function App() {
       copia[index].cantidad = n;
       return copia;
     });
-  };
+  }, []);
 
-  const handleEliminarItem = (index: number) => {
+  const handleEliminarItem = useCallback((index: number) => {
     setPedido((prev) => prev.filter((_, i) => i !== index));
-  };
+  }, []);
 
-  const handleSeleccionarTipoEntrega = (tipo: TipoEntrega) => {
+  const handleSeleccionarTipoEntrega = useCallback((tipo: TipoEntrega) => {
     if (tipo === 'delivery' && !deliveryGratisHabilitado) {
       setToast('¡Agrega 3 o más shorts para Delivery GRATIS!');
       setTimeout(() => setToast(null), 2600);
       return;
     }
     setTipoEntrega(tipo);
-  };
+  }, [deliveryGratisHabilitado]);
 
-  // Generador de mensaje de WhatsApp
-  const generarMensajeWhatsApp = () => {
+  // Generador de mensaje de WhatsApp memoizado
+  const mensajeWhatsApp = useMemo(() => {
     if (pedido.length === 0) return '';
 
     let txt = 'Hola PoolStore 👋, quiero realizar el siguiente pedido:\n\n';
@@ -188,21 +319,18 @@ export default function App() {
 
     txt += '¿Me confirmas la disponibilidad y el horario?';
     return txt;
-  };
+  }, [pedido, precioTotal, totalPrendas, tipoEntrega, deliveryGratisHabilitado, zonaDelivery, direccionDelivery, destinoShalom, puntoSeleccionado]);
 
   const handleEnviarWhatsApp = () => {
-    const msg = generarMensajeWhatsApp();
-    if (!msg) return;
-    const url = `https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(msg)}`;
+    if (!mensajeWhatsApp) return;
+    const url = `https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(mensajeWhatsApp)}`;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
     <div className="min-h-screen bg-white text-neutral-900 flex flex-col font-sans pb-28">
       
-      {/* ============================================================== */}
-      {/* 1. CABECERA: POOLSTORE + Tu tienda virtual de confianza        */}
-      {/* ============================================================== */}
+      {/* 1. CABECERA: POOLSTORE + Tu tienda virtual de confianza */}
       <header className="sticky top-0 z-30 bg-white/98 backdrop-blur-md border-b border-neutral-200">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex flex-col">
@@ -226,7 +354,6 @@ export default function App() {
               Guía de Tallas
             </button>
 
-            {/* Botón de Pedido */}
             <button
               type="button"
               onClick={() => setModalPedidoAbierto(true)}
@@ -245,14 +372,12 @@ export default function App() {
 
       {/* Notificación flotante rápida */}
       {toast && (
-        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-neutral-950 text-white px-4 py-2 rounded-lg shadow-xl text-xs font-semibold animate-fade-in text-center max-w-sm">
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-neutral-950 text-white px-4 py-2 rounded-lg shadow-xl text-xs font-semibold animate-fade-in text-center max-w-sm pointer-events-none">
           {toast}
         </div>
       )}
 
-      {/* ============================================================== */}
-      {/* 2. SECCIÓN SUPERIOR: CATÁLOGO DE SHORTS + PRECIOS + ENTREGAS   */}
-      {/* ============================================================== */}
+      {/* 2. SECCIÓN SUPERIOR: CATÁLOGO DE SHORTS + PRECIOS + ENTREGAS */}
       <section className="max-w-6xl mx-auto px-4 pt-6 pb-2">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>
@@ -317,119 +442,30 @@ export default function App() {
         </div>
       </section>
 
-      {/* ============================================================== */}
-      {/* 3. CUADRÍCULA DE SHORTS (FOTOGRAFÍAS GRANDES Y ACCIONES)       */}
-      {/* ============================================================== */}
+      {/* 3. CUADRÍCULA DE SHORTS (FOTOGRAFÍAS GRANDES Y ACCIONES RÁPIDAS) */}
       <main className="max-w-6xl mx-auto px-4 py-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {SHORTS.map((short) => {
-            const tActual = getTalla(short.id);
-            const cActual = getCantidad(short.id);
-
-            return (
-              <article
-                key={short.id}
-                className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between"
-              >
-                {/* Imagen del short */}
-                <div
-                  className="w-full aspect-[3/2] bg-neutral-50 flex items-center justify-center p-2.5 cursor-pointer relative group"
-                  onClick={() => setModalImagen(short)}
-                  title="Toca para ver en grande"
-                >
-                  <img
-                    src={short.image}
-                    alt={short.title}
-                    loading="lazy"
-                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200"
-                  />
-                  <span className="absolute top-3 right-3 bg-neutral-950 text-white font-extrabold text-xs px-2.5 py-1 rounded-md shadow-xs">
-                    S/ 15
-                  </span>
-                </div>
-
-                {/* Info y Controles de Compra */}
-                <div className="p-4 flex flex-col gap-3">
-                  <div>
-                    <h2 className="font-bold text-base text-neutral-950 capitalize leading-snug">
-                      {short.title}
-                    </h2>
-                    <p className="text-xs text-neutral-400 mt-0.5">
-                      Short deportivo con cordón ajustable
-                    </p>
-                  </div>
-
-                  {/* Selector de Talla */}
-                  <div>
-                    <div className="flex justify-between text-xs text-neutral-600 mb-1.5 font-medium">
-                      <span>Talla:</span>
-                      <span className="font-bold text-neutral-950">{tActual}</span>
-                    </div>
-
-                    <div className="grid grid-cols-5 gap-1">
-                      {TALLAS.map((talla) => (
-                        <button
-                          key={talla}
-                          type="button"
-                          onClick={() => handleSeleccionarTalla(short.id, talla)}
-                          className={`py-1.5 rounded-lg text-xs font-bold border transition-colors cursor-pointer ${
-                            tActual === talla
-                              ? 'bg-neutral-950 text-white border-neutral-950 shadow-xs'
-                              : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-100 hover:border-neutral-300'
-                          }`}
-                        >
-                          {talla}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Cantidad y Botón de Agregar */}
-                  <div className="flex items-center gap-2 pt-2 border-t border-neutral-100">
-                    <div className="flex items-center border border-neutral-300 rounded-lg bg-neutral-50">
-                      <button
-                        type="button"
-                        onClick={() => handleCambiarCantidad(short.id, -1)}
-                        className="px-2.5 py-1.5 text-neutral-700 hover:bg-neutral-200 font-bold text-sm cursor-pointer"
-                        title="Menos"
-                      >
-                        -
-                      </button>
-                      <span className="px-2 text-xs font-bold text-neutral-950 tabular-nums">
-                        {cActual}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => handleCambiarCantidad(short.id, 1)}
-                        className="px-2.5 py-1.5 text-neutral-700 hover:bg-neutral-200 font-bold text-sm cursor-pointer"
-                        title="Más"
-                      >
-                        +
-                      </button>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => handleAgregarAlPedido(short)}
-                      className="flex-1 py-2 px-3 bg-neutral-950 hover:bg-neutral-800 text-white text-xs font-bold rounded-lg transition-colors cursor-pointer active:scale-98"
-                    >
-                      Agregar ({tActual})
-                    </button>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+          {SHORTS.map((short, idx) => (
+            <TarjetaShort
+              key={short.id}
+              short={short}
+              index={idx}
+              tallaActual={tallas[short.id] || 'M'}
+              cantidadActual={cantidades[short.id] || 1}
+              onSeleccionarTalla={handleSeleccionarTalla}
+              onCambiarCantidad={handleCambiarCantidad}
+              onAgregar={handleAgregarAlPedido}
+              onVerImagen={handleVerImagen}
+            />
+          ))}
         </div>
       </main>
 
-      {/* ============================================================== */}
-      {/* 4. BARRA INFERIOR DE PEDIDO (Aparece al haber prendas)         */}
-      {/* ============================================================== */}
+      {/* 4. BARRA INFERIOR DE PEDIDO (Aparece al haber prendas) */}
       {totalPrendas > 0 && (
         <aside 
           aria-label="Resumen de pedido" 
-          className="fixed bottom-0 inset-x-0 z-30 p-3 bg-neutral-950 text-white border-t border-neutral-800 shadow-2xl"
+          className="fixed bottom-0 inset-x-0 z-30 p-3 bg-neutral-950 text-white border-t border-neutral-800 shadow-2xl animate-fade-in"
         >
           <div className="max-w-4xl mx-auto flex items-center justify-between gap-3">
             <div>
@@ -464,9 +500,7 @@ export default function App() {
         </aside>
       )}
 
-      {/* ============================================================== */}
-      {/* 5. BOTÓN FLOTANTE DISCRETO DE WHATSAPP (903 566 655)           */}
-      {/* ============================================================== */}
+      {/* 5. BOTÓN FLOTANTE DISCRETO DE WHATSAPP (903 566 655) */}
       <aside 
         aria-label="Chat de WhatsApp"
         className={`fixed z-20 right-4 sm:right-6 transition-all duration-200 ${
@@ -488,11 +522,9 @@ export default function App() {
         </a>
       </aside>
 
-      {/* ============================================================== */}
-      {/* 6. MODAL DE PEDIDO, SELECCIÓN DE ENTREGA Y ENVÍO A WHATSAPP    */}
-      {/* ============================================================== */}
+      {/* 6. MODAL DE PEDIDO, SELECCIÓN DE ENTREGA Y ENVÍO A WHATSAPP */}
       {modalPedidoAbierto && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 animate-fade-in">
           <div
             className="absolute inset-0"
             onClick={() => setModalPedidoAbierto(false)}
@@ -543,6 +575,9 @@ export default function App() {
                         <img
                           src={it.producto.image}
                           alt={it.producto.title}
+                          width={60}
+                          height={40}
+                          loading="lazy"
                           className="w-13 h-10 object-contain bg-white rounded border border-neutral-200 shrink-0"
                         />
 
@@ -780,7 +815,7 @@ export default function App() {
                       Mensaje preparado para enviar al 903 566 655:
                     </p>
                     <pre className="bg-neutral-100 p-3 rounded-lg text-xs font-mono text-neutral-800 whitespace-pre-wrap leading-relaxed max-h-40 overflow-y-auto">
-                      {generarMensajeWhatsApp()}
+                      {mensajeWhatsApp}
                     </pre>
                   </div>
                 </>
@@ -809,9 +844,7 @@ export default function App() {
         </div>
       )}
 
-      {/* ============================================================== */}
-      {/* 7. MODAL DE FOTO EN TAMAÑO COMPLETO                            */}
-      {/* ============================================================== */}
+      {/* 7. MODAL DE FOTO EN TAMAÑO COMPLETO */}
       {modalImagen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 animate-fade-in"
@@ -837,6 +870,8 @@ export default function App() {
               <img
                 src={modalImagen.image}
                 alt={modalImagen.title}
+                width={900}
+                height={600}
                 className="w-full h-full object-contain"
               />
             </div>
@@ -849,16 +884,14 @@ export default function App() {
                 }}
                 className="px-4 py-2.5 bg-neutral-950 text-white rounded-lg text-xs font-bold hover:bg-neutral-800 cursor-pointer"
               >
-                Agregar este short ({getTalla(modalImagen.id)}) al pedido
+                Agregar este short ({tallas[modalImagen.id] || 'M'}) al pedido
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* ============================================================== */}
-      {/* 8. MODAL DE GUÍA DE TALLAS                                     */}
-      {/* ============================================================== */}
+      {/* 8. MODAL DE GUÍA DE TALLAS */}
       {modalTallas && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 animate-fade-in"
@@ -913,9 +946,7 @@ export default function App() {
         </div>
       )}
 
-      {/* ============================================================== */}
-      {/* 9. PIE DE PÁGINA LIMPIO Y ELEGANTE                             */}
-      {/* ============================================================== */}
+      {/* 9. PIE DE PÁGINA LIMPIO */}
       <footer className="mt-16 text-center text-xs text-neutral-400 py-8 border-t border-neutral-100">
         <p className="font-extrabold text-neutral-900 tracking-widest uppercase">POOLSTORE</p>
         <p className="italic text-neutral-500 mt-0.5">Tu tienda virtual de confianza.</p>
