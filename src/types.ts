@@ -1,12 +1,22 @@
 export type Size = 'XS' | 'S' | 'M' | 'L' | 'XL';
 
+export type CollectionType = 'clasicos' | 'equipos';
+
 export interface ShortProduct {
   id: string;
   title: string;
-  colorDescription: string;
+  colorDescription?: string;
   image: string;
-  driveId: string;
-  originalFilename: string;
+  driveId?: string;
+  originalFilename?: string;
+  name?: string;
+  collection?: CollectionType;
+  fabric?: 'Polistrech' | 'Win';
+  availableSizes?: Size[];
+  price?: number;
+  promoPrice?: number;
+  images?: string[];
+  googlePhotosUrl?: string;
 }
 
 export interface OrderItem {

@@ -1,0 +1,200 @@
+[
+  {
+    "id": "win-argentina",
+    "name": "Argentina",
+    "title": "Short Argentina",
+    "collection": "win",
+    "fabric": "Win",
+    "size": "L",
+    "availableSizes": [
+      "L"
+    ],
+    "price": 28,
+    "promoPrice": 25,
+    "image": "/shorts-win/argentina.jpg",
+    "images": [
+      "/shorts-win/argentina.jpg"
+    ],
+    "googlePhotosUrl": "https://photos.app.goo.gl/8kUbaqheYe7g2ns29"
+  },
+  {
+    "id": "win-barcelona",
+    "name": "Barcelona",
+    "title": "Short Barcelona",
+    "collection": "win",
+    "fabric": "Win",
+    "size": "L",
+    "availableSizes": [
+      "L"
+    ],
+    "price": 28,
+    "promoPrice": 25,
+    "image": "/shorts-win/barcelona.jpg",
+    "images": [
+      "/shorts-win/barcelona.jpg"
+    ],
+    "googlePhotosUrl": "https://photos.app.goo.gl/wF9ZbLcd1opeB36Y7"
+  },
+  {
+    "id": "win-manchester-united",
+    "name": "Manchester United",
+    "title": "Short Manchester United",
+    "collection": "win",
+    "fabric": "Win",
+    "size": "L",
+    "availableSizes": [
+      "L"
+    ],
+    "price": 28,
+    "promoPrice": 25,
+    "image": "/shorts-win/manchester-united.jpg",
+    "images": [
+      "/shorts-win/manchester-united.jpg"
+    ],
+    "googlePhotosUrl": "https://photos.app.goo.gl/SjKRhnQcMvoUk7mh7"
+  },
+  {
+    "id": "win-argentina-v2",
+    "name": "Argentina V2",
+    "title": "Short Argentina V2",
+    "collection": "win",
+    "fabric": "Win",
+    "size": "L",
+    "availableSizes": [
+      "L"
+    ],
+    "price": 28,
+    "promoPrice": 25,
+    "image": "/shorts-win/argentina-v2.jpg",
+    "images": [
+      "/shorts-win/argentina-v2.jpg"
+    ],
+    "googlePhotosUrl": "https://photos.app.goo.gl/vCSzYKYb9PUpLGNx7"
+  },
+  {
+    "id": "win-portugal",
+    "name": "Portugal",
+    "title": "Short Portugal",
+    "collection": "win",
+    "fabric": "Win",
+    "size": "L",
+    "availableSizes": [
+      "L"
+    ],
+    "price": 28,
+    "promoPrice": 25,
+    "image": "/shorts-win/portugal.jpg",
+    "images": [
+      "/shorts-win/portugal.jpg"
+    ],
+    "googlePhotosUrl": "https://photos.app.goo.gl/rsbKNYK6phVQtiRaA"
+  },
+  {
+    "id": "win-alianza-lima",
+    "name": "Alianza Lima",
+    "title": "Short Alianza Lima",
+    "collection": "win",
+    "fabric": "Win",
+    "size": "L",
+    "availableSizes": [
+      "L"
+    ],
+    "price": 28,
+    "promoPrice": 25,
+    "image": "/shorts-win/alianza-lima.jpg",
+    "images": [
+      "/shorts-win/alianza-lima.jpg"
+    ],
+    "googlePhotosUrl": "https://photos.app.goo.gl/7s8pubEo9Tzben8b7"
+  },
+  {
+    "id": "win-real-madrid",
+    "name": "Real Madrid",
+    "title": "Short Real Madrid",
+    "collection": "win",
+    "fabric": "Win",
+    "size": "L",
+    "availableSizes": [
+      "L"
+    ],
+    "price": 28,
+    "promoPrice": 25,
+    "image": "/shorts-win/real-madrid.jpg",
+    "images": [
+      "/shorts-win/real-madrid.jpg"
+    ],
+    "googlePhotosUrl": "https://photos.app.goo.gl/6u7fuJATsrQnqPMs9"
+  },
+  {
+    "id": "win-barcelona-v2",
+    "name": "FC Barcelona V2",
+    "title": "Short FC Barcelona V2",
+    "collection": "win",
+    "fabric": "Win",
+    "size": "L",
+    "availableSizes": [
+      "L"
+    ],
+    "price": 28,
+    "promoPrice": 25,
+    "image": "/shorts-win/barcelona-v2.jpg",
+    "images": [
+      "/shorts-win/barcelona-v2.jpg"
+    ],
+    "googlePhotosUrl": "https://photos.app.goo.gl/s7JFfVKr4B8646T4A"
+  },
+  {
+    "id": "win-francia",
+    "name": "Francia",
+    "title": "Short Francia",
+    "collection": "win",
+    "fabric": "Win",
+    "size": "L",
+    "availableSizes": [
+      "L"
+    ],
+    "price": 28,
+    "promoPrice": 25,
+    "image": "/shorts-win/francia.jpg",
+    "images": [
+      "/shorts-win/francia.jpg"
+    ],
+    "googlePhotosUrl": "https://photos.app.goo.gl/GY4HJe7jrzrj3pdSA"
+  },
+  {
+    "id": "win-brasil",
+    "name": "Brasil",
+    "title": "Short Brasil",
+    "collection": "win",
+    "fabric": "Win",
+    "size": "L",
+    "availableSizes": [
+      "L"
+    ],
+    "price": 28,
+    "promoPrice": 25,
+    "image": "/shorts-win/brasil.jpg",
+    "images": [
+      "/shorts-win/brasil.jpg"
+    ],
+    "googlePhotosUrl": "https://photos.app.goo.gl/N6hofRfEvBHSH9hP9"
+  },
+  {
+    "id": "win-universitario",
+    "name": "Universitario de Deportes",
+    "title": "Short Universitario de Deportes",
+    "collection": "win",
+    "fabric": "Win",
+    "size": "L",
+    "availableSizes": [
+      "L"
+    ],
+    "price": 28,
+    "promoPrice": 25,
+    "image": "/shorts-win/universitario.jpg",
+    "images": [
+      "/shorts-win/universitario.jpg"
+    ],
+    "googlePhotosUrl": "https://photos.app.goo.gl/RqXMRd4xVmNqucgE8"
+  }
+]
