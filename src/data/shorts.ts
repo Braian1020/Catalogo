@@ -183,7 +183,8 @@ export const SHORTS: ShortProduct[] = [
     "colorDescription": "Negro con rayas Negras",
     "image": "/shorts/negro-con-rayas-negras.webp",
     "driveId": "1MufzHYoTCvsLxfNQkUWCyGRHS1o8nvwk",
-    "originalFilename": "Negro con rayas Negras.png"
+    "originalFilename": "Negro con rayas Negras.png",
+    "availableSizes": ["XL"]
   },
   {
     "id": "negro-con-rayas-rosadas",
