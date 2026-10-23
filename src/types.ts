@@ -1,8 +1,8 @@
 export type Talla = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL';
 export type Size = Talla;
 
-export type Categoria = 'ropa' | 'tecnologia';
-export type Subcategoria = 'shorts' | 'parlantes' | 'tv-box' | 'accesorios';
+export type Categoria = 'ropa';
+export type Subcategoria = 'shorts';
 export type TipoTela = 'poliester' | 'win';
 
 export type CollectionType = 'clasicos' | 'equipos';

@@ -3,20 +3,17 @@ import rawProductos from './productos.json';
 
 export const PRODUCTOS: Producto[] = rawProductos as Producto[];
 
-// Catálogo Ropa: Shorts de Poliéster (36 modelos)
+// Catálogo Ropa: Shorts Clásicos (Poliéster, 36 modelos)
 export const SHORTS_POLIESTER = PRODUCTOS.filter(
   (p) => p.categoria === 'ropa' && p.subcategoria === 'shorts' && p.tipoTela === 'poliester'
 );
+export const SHORTS_CLASICOS = SHORTS_POLIESTER;
 
-// Catálogo Ropa: Shorts Win de Equipos (11 modelos)
+// Catálogo Ropa: Shorts Deportivos (Tela Win de Equipos, 11 modelos)
 export const SHORTS_WIN = PRODUCTOS.filter(
   (p) => p.categoria === 'ropa' && p.subcategoria === 'shorts' && p.tipoTela === 'win'
 );
-
-// Catálogo Tecnología: Parlantes, TV Box, Accesorios (Próximamente / Novedades)
-export const PRODUCTOS_TECNOLOGIA = PRODUCTOS.filter(
-  (p) => p.categoria === 'tecnologia'
-);
+export const SHORTS_DEPORTIVOS = SHORTS_WIN;
 
 // Lista única de colores de short disponibles en Poliéster
 export const COLORES_SHORT_POLIESTER = Array.from(

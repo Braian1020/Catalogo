@@ -22,10 +22,10 @@ export function generarMensajeWhatsApp(
   baseUrl: string = typeof window !== 'undefined' ? window.location.origin : ''
 ): string {
   if (items.length === 0) {
-    return 'Hola POLESTORE 👋, deseo consultar sobre los productos de su catálogo web.';
+    return 'Hola Pool Store 👋, deseo consultar sobre los productos de su catálogo web.';
   }
 
-  const header = 'Hola POLESTORE 👋\nQuiero realizar el siguiente pedido desde la web:\n\n';
+  const header = 'Hola Pool Store 👋\nQuiero realizar el siguiente pedido desde la web:\n\n';
 
   const itemsText = items
     .map((item) => {
@@ -69,10 +69,10 @@ export const POOLSTORE_PHONE_DISPLAY = POLESTORE_PHONE_DISPLAY;
 
 export function generateWhatsAppMessage(items: any[]): string {
   if (!items || items.length === 0) {
-    return 'Hola POLESTORE 👋, deseo consultar sobre los shorts deportivos de su catálogo.';
+    return 'Hola Pool Store 👋, deseo consultar sobre los shorts deportivos de su catálogo.';
   }
 
-  const header = 'Hola POLESTORE 👋, quiero realizar el siguiente pedido:\n\n';
+  const header = 'Hola Pool Store 👋, quiero realizar el siguiente pedido:\n\n';
   const itemsText = items
     .map((item) => {
       const prod = item.product || item.producto;
