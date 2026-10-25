@@ -19,18 +19,30 @@ export const POLESTORE_PHONE_DISPLAY = '+51 903 566 655';
 export function generarMensajeWhatsApp(
   items: ItemCarrito[],
   total: number,
+  precioUnitario: number = 15.0,
+  detallesEntrega?: string,
   baseUrl: string = typeof window !== 'undefined' ? window.location.origin : ''
 ): string {
   if (items.length === 0) {
     return 'Hola Pool Store 👋, deseo consultar sobre los productos de su catálogo web.';
   }
 
-  const header = 'Hola Pool Store 👋\nQuiero realizar el siguiente pedido desde la web:\n\n';
+  const totalPrendas = items.reduce((acc, it) => acc + it.cantidad, 0);
+  const esDocena = totalPrendas >= 12;
+
+  let promoTag = '';
+  if (esDocena) {
+    promoTag = '🏷️ *PROMO DOCENA APLICADA (S/ 12.00 c/u)*\n\n';
+  } else if (totalPrendas >= 6) {
+    promoTag = '🏷️ *PROMO DESDE 6 UNIDADES (S/ 13.50 c/u)*\n\n';
+  }
+
+  const header = `Hola Pool Store 👋\nQuiero realizar el siguiente pedido desde la web:\n${promoTag}`;
 
   const itemsText = items
     .map((item) => {
       const p = item.producto;
-      const subtotal = p.precio * item.cantidad;
+      const subtotal = precioUnitario * item.cantidad;
       const urlFoto = p.imagen.startsWith('http')
         ? p.imagen
         : baseUrl
@@ -44,16 +56,20 @@ export function generarMensajeWhatsApp(
         `• Color de rayas: ${p.colorRayas}`,
         `• Talla: ${item.talla}`,
         `• Cantidad: ${item.cantidad}`,
-        `• Precio unitario: S/ ${p.precio.toFixed(2)}`,
+        `• Precio unitario: S/ ${precioUnitario.toFixed(2)}`,
         `• Subtotal: S/ ${subtotal.toFixed(2)}`,
         `• Foto: ${urlFoto}`,
       ].join('\n');
     })
     .join('\n\n');
 
-  const totalPrendas = items.reduce((acc, it) => acc + it.cantidad, 0);
+  const regularTotal = totalPrendas * 15.0;
+  const ahorro = Math.max(0, regularTotal - total);
 
-  const footer = `\n\n══════════════════════\n📦 *Total de productos:* ${totalPrendas}\n💰 *TOTAL GENERAL: S/ ${total.toFixed(2)}*\n\n¿Me confirmas la disponibilidad y coordinamos la entrega?`;
+  const entregaText = detallesEntrega ? `\n\n${detallesEntrega}` : '';
+  const ahorroText = ahorro > 0 ? `\n💰 *Ahorro en prendas:* S/ ${ahorro.toFixed(2)}` : '';
+
+  const footer = `\n\n══════════════════════\n📦 *Total de shorts:* ${totalPrendas}${ahorroText}${entregaText}\n💵 *TOTAL GENERAL A PAGAR: S/ ${total.toFixed(2)}*\n\n¿Me confirmas disponibilidad para despachar mi pedido?`;
 
   return `${header}${itemsText}${footer}`;
 }

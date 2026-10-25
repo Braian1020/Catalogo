@@ -62,3 +62,18 @@ export function estaTallaDisponible(producto: Producto, talla: Talla): boolean {
   if (!producto.disponible) return false;
   return producto.tallasDisponibles.includes(talla);
 }
+
+// Obtiene todos los productos (variantes con sus diferentes rayas) para un color de short
+export function getProductosPorColorShort(colorShort: string): Producto[] {
+  return SHORTS_POLIESTER.filter(
+    (s) => s.colorShort.toLowerCase() === colorShort.toLowerCase()
+  );
+}
+
+// Obtiene la imagen representativa para la tarjeta de catálogo de un color de short
+export function getImagenColorShort(colorShort: string): string {
+  const p = SHORTS_POLIESTER.find(
+    (s) => s.colorShort.toLowerCase() === colorShort.toLowerCase()
+  );
+  return p ? p.imagen : '';
+}
