@@ -1227,11 +1227,8 @@ export default function App() {
             <div className="mb-10">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
-                    <span>Shorts Clásicos Polistrech</span>
-                    <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">
-                      S/ 15.00 c/u
-                    </span>
+                  <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                    Shorts Clásicos Polistrech
                   </h2>
                   <p className="text-xs text-slate-500">
                     Nuestros productos más vendidos. Selecciona el color de rayas para ver la foto real y elige tu talla.
@@ -1240,7 +1237,7 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {coloresClasicosFiltrados.map((colorShort) => {
+                {coloresClasicosFiltrados.map((colorShort, idx) => {
                   const estado = estadoClasicos[colorShort] || {
                     colorRayas: getRayasPorColorShort(colorShort)[0] || '',
                     talla: 'M' as Talla,
@@ -1261,8 +1258,9 @@ export default function App() {
 
                   return (
                     <article
-                      key={colorShort}
-                      className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col group"
+                      key={`${categoriaActiva}-${busqueda}-${colorShort}`}
+                      style={{ animationDelay: `${Math.min(idx * 35, 350)}ms` }}
+                      className="animate-card-stagger bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col group"
                     >
                       {/* FOTO GRANDE Y NÍTIDA */}
                       <div className="relative aspect-4/3 sm:aspect-square bg-slate-100 overflow-hidden">
@@ -1408,10 +1406,7 @@ export default function App() {
                             className="flex-1 py-2 px-3 bg-slate-900 hover:bg-black active:scale-98 text-white rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
                           >
                             <ShoppingBag className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                            <span>Agregar</span>
-                            <span className="text-slate-300 font-normal">
-                              · S/ {(15.0 * estado.cantidad).toFixed(2)}
-                            </span>
+                            <span>Agregar al pedido</span>
                           </button>
                         </div>
                       </div>
@@ -1429,9 +1424,6 @@ export default function App() {
                 <div>
                   <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
                     <span>Shorts Deportivos Tela Win</span>
-                    <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                      1x S/ 25 · 3x S/ 69 · 12x S/ 240
-                    </span>
                   </h2>
                   <p className="text-xs text-slate-500">
                     Modelos de clubes y selecciones en tela Win. Puedes elegir versión oficial (V1) o alternativa (V2).
@@ -1440,7 +1432,7 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {gruposWinFiltrados.map((grupo) => {
+                {gruposWinFiltrados.map((grupo, idx) => {
                   const estado = estadoGruposWin[grupo.id] || {
                     versionId: grupo.versiones[0].id,
                     cantidad: 1,
@@ -1456,10 +1448,14 @@ export default function App() {
 
                   const tieneMultiplesVersiones = grupo.versiones.length > 1;
 
+                  const baseDelay = categoriaActiva === 'todos' && coloresClasicosFiltrados.length > 0 ? 80 : 0;
+                  const delay = Math.min(baseDelay + idx * 35, 360);
+
                   return (
                     <article
-                      key={grupo.id}
-                      className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col group"
+                      key={`${categoriaActiva}-${busqueda}-${grupo.id}`}
+                      style={{ animationDelay: `${delay}ms` }}
+                      className="animate-card-stagger bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col group"
                     >
                       {/* FOTO GRANDE Y NÍTIDA */}
                       <div className="relative aspect-4/3 sm:aspect-square bg-slate-100 overflow-hidden">
@@ -1517,14 +1513,7 @@ export default function App() {
 
                         <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
                           <span className="px-2 py-0.5 bg-emerald-700 text-white rounded text-[10px] font-extrabold uppercase tracking-wide">
-                            Tela Win Premium
-                          </span>
-                          <span className="px-2 py-0.5 bg-slate-900/80 backdrop-blur-xs text-white rounded text-[10px] font-bold">
-                            {estado.cantidad >= 12
-                              ? 'Docena S/ 20 c/u'
-                              : estado.cantidad >= 3
-                              ? 'Promo 3x S/ 69'
-                              : '1x S/ 25'}
+                            Tela Win
                           </span>
                         </div>
                       </div>
@@ -1532,18 +1521,10 @@ export default function App() {
                       {/* CONTROLES INTERACTIVOS DIRECTOS */}
                       <div className="p-4 flex-1 flex flex-col justify-between gap-3">
                         <div>
-                          <div className="flex items-center justify-between">
+                          <div>
                             <h3 className="font-black text-sm text-slate-900">
                               {productoActivo.nombre}
                             </h3>
-                            <div className="text-right">
-                              <span className="text-sm font-black text-slate-900 block leading-tight">
-                                S/ 25.00
-                              </span>
-                              <span className="text-[10px] text-emerald-700 font-extrabold block">
-                                3x S/ 69 · 12x S/ 240
-                              </span>
-                            </div>
                           </div>
                           <p className="text-xs text-slate-500 mt-0.5">
                             Color: {productoActivo.colorShort} · {productoActivo.colorRayas}
@@ -1649,10 +1630,7 @@ export default function App() {
                             className="flex-1 py-2 px-3 bg-slate-900 hover:bg-black active:scale-98 text-white rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
                           >
                             <ShoppingBag className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                            <span>Agregar</span>
-                            <span className="text-slate-300 font-normal">
-                              · S/ {subtotalCard.toFixed(2)}
-                            </span>
+                            <span>Agregar al pedido</span>
                           </button>
                         </div>
                       </div>
@@ -2366,8 +2344,7 @@ export default function App() {
               <div>
                 <h4 className="font-black text-sm text-slate-900">{modalFoto.nombre}</h4>
                 <p className="text-xs text-slate-500">
-                  {modalFoto.tipoTela === 'win' ? 'Tela Win Premium' : 'Tela Polistrech'} · S/{' '}
-                  {modalFoto.precio.toFixed(2)}
+                  {modalFoto.tipoTela === 'win' ? 'Tela Win' : 'Tela Polistrech'}
                 </p>
               </div>
 
@@ -2437,9 +2414,6 @@ export default function App() {
                       </span>
                     </div>
                   </div>
-                  <span className="px-2.5 py-1 rounded-full bg-slate-200 text-slate-800 font-extrabold text-[10px]">
-                    1x S/ 15 · 6x S/ 13.50 · 12x S/ 12
-                  </span>
                 </div>
 
                 <p className="text-slate-600 leading-relaxed">
@@ -2482,9 +2456,6 @@ export default function App() {
                       </span>
                     </div>
                   </div>
-                  <span className="px-2.5 py-1 rounded-full bg-emerald-200 text-emerald-900 font-extrabold text-[10px]">
-                    1x S/ 25 · 3x S/ 69 · 12x S/ 240
-                  </span>
                 </div>
 
                 <p className="text-emerald-900/90 leading-relaxed">
