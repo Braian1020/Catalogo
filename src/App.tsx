@@ -113,8 +113,8 @@ export const PUNTOS_CENTRICOS_CHICLAYO = [
     icono: '🌳',
   },
   {
-    id: 'zonas_aledanas',
-    nombre: 'Zonas aledañas',
+    id: 'zonas_cercanas',
+    nombre: 'Zonas cercanas',
     detalle: 'Previa coordinación por WhatsApp',
     icono: '📍',
   },
@@ -151,6 +151,7 @@ export default function App() {
   const [modalCarritoAbierto, setModalCarritoAbierto] = useState<boolean>(false);
   const [modalFoto, setModalFoto] = useState<Producto | null>(null);
   const [modalGuiaTallas, setModalGuiaTallas] = useState<boolean>(false);
+  const [modalTelasAbierto, setModalTelasAbierto] = useState<boolean>(false);
   const [menuMovilAbierto, setMenuMovilAbierto] = useState<boolean>(false);
   const [toast, setToast] = useState<string | null>(null);
 
@@ -586,7 +587,7 @@ export default function App() {
             </span>
             <span className="text-slate-500">•</span>
             <span className="text-slate-200 flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-blue-400" /> Puntos Céntricos: Plaza Cívica · Catedral · Banco de la Nación · Plazuela · Zonas aledañas (S/ 0 Gratis)
+              <MapPin className="w-3.5 h-3.5 text-blue-400" /> Puntos Céntricos: Plaza Cívica · Catedral · Banco de la Nación · Plazuela · Zonas cercanas (S/ 0 Gratis)
             </span>
             <span className="text-slate-500">•</span>
             <span className="text-amber-300 font-bold">
@@ -900,7 +901,7 @@ export default function App() {
                     : 'hover:text-slate-900 text-slate-600'
                 }`}
               >
-                Shorts Deportivos Win (11)
+                Shorts Deportivos (11)
               </button>
               <button
                 type="button"
@@ -993,9 +994,34 @@ export default function App() {
                       <strong>Delivery Gratis</strong> en Chiclayo por la compra de 3 o más prendas (¡automático con la promo 3 x S/ 69!).
                     </span>
                   </div>
-                  <div className="text-slate-500">
+                  <div className="text-slate-500 font-semibold">
                     11 modelos de clubes y selecciones en Talla L
                   </div>
+                </div>
+
+                {/* Breve descripción de Tela Win + Botón Saber más sobre la tela */}
+                <div className="pt-2.5 border-t border-slate-100/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-emerald-50/50 -mx-4 -mb-4 sm:-mx-5 sm:-mb-5 p-3.5 sm:p-4 rounded-b-2xl border-t border-emerald-100">
+                  <div className="flex items-start gap-2.5">
+                    <span className="w-6 h-6 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-black text-xs shrink-0 mt-0.5 shadow-xs">
+                      ⚽
+                    </span>
+                    <div>
+                      <span className="font-black text-emerald-950 block text-xs">
+                        Tela Win Deportiva:
+                      </span>
+                      <p className="text-emerald-800 text-[11px] leading-tight">
+                        Tejido técnico transpirable de microfibra deportiva, secado ultra veloz y máxima ligereza para fútbol y entrenamiento.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setModalTelasAbierto(true)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer shadow-xs self-start sm:self-auto"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Saber más sobre la tela</span>
+                  </button>
                 </div>
               </div>
             ) : categoriaActiva === 'clasicos' ? (
@@ -1052,9 +1078,34 @@ export default function App() {
                       <strong>Delivery Gratis</strong> en Chiclayo por la compra de 3 o más prendas.
                     </span>
                   </div>
-                  <div className="text-slate-500">
+                  <div className="text-slate-500 font-semibold">
                     36 colores disponibles en tallas XS a XL
                   </div>
+                </div>
+
+                {/* Breve descripción de Tela Polistrech + Botón Saber más sobre la tela */}
+                <div className="pt-2.5 border-t border-slate-100/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-slate-50 -mx-4 -mb-4 sm:-mx-5 sm:-mb-5 p-3.5 sm:p-4 rounded-b-2xl border-t border-slate-200/80">
+                  <div className="flex items-start gap-2.5">
+                    <span className="w-6 h-6 rounded-lg bg-slate-900 text-white flex items-center justify-center font-black text-xs shrink-0 mt-0.5 shadow-xs">
+                      🩳
+                    </span>
+                    <div>
+                      <span className="font-black text-slate-900 block text-xs">
+                        Tela Polistrech (Poliéster Elástico):
+                      </span>
+                      <p className="text-slate-600 text-[11px] leading-tight">
+                        Suave al tacto, elástica, fresca y durable. Cuenta con pretina reforzada y cordón ajustable a tu cintura.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setModalTelasAbierto(true)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer shadow-xs self-start sm:self-auto"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Saber más sobre la tela</span>
+                  </button>
                 </div>
               </div>
             ) : (
@@ -1111,9 +1162,24 @@ export default function App() {
                       Combina modelos clásicos y deportivos en tu mismo pedido.
                     </span>
                   </div>
-                  <div className="text-slate-500">
+                  <div className="text-slate-500 font-semibold">
                     Catálogo completo: 47 modelos en total
                   </div>
+                </div>
+
+                {/* Breve descripción comparativa de ambas telas + Botón Saber más sobre la tela */}
+                <div className="pt-2.5 border-t border-slate-100/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-slate-50 -mx-4 -mb-4 sm:-mx-5 sm:-mb-5 p-3.5 sm:p-4 rounded-b-2xl border-t border-slate-200/80">
+                  <div className="text-[11px] text-slate-600 leading-tight">
+                    <span className="font-bold text-slate-900">Polistrech:</span> Elástica y suave para uso diario. · <span className="font-bold text-emerald-900">Win:</span> Técnica, microperforada y de secado rápido para deporte.
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setModalTelasAbierto(true)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer shadow-xs self-start sm:self-auto"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Saber más sobre la tela</span>
+                  </button>
                 </div>
               </div>
             )}
@@ -1649,6 +1715,17 @@ export default function App() {
                   </p>
                 </div>
               </div>
+
+              <div className="pt-1 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setModalTelasAbierto(true)}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold rounded-xl transition-colors cursor-pointer border border-slate-200"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Saber más sobre la composición y cuidado de las telas</span>
+                </button>
+              </div>
             </div>
           </div>
         </section>
@@ -1656,7 +1733,7 @@ export default function App() {
         {/* ======================================================== */}
         {/* SECCIÓN 3: LUGARES DE ENTREGA                            */}
         {/* Plaza Cívica, Catedral, Banco de la Nación, Plazuela     */}
-        {/* y Zonas aledañas (previa coordinación por WhatsApp)     */}
+        {/* y Zonas cercanas (previa coordinación por WhatsApp)     */}
         {/* ======================================================== */}
         <section id="lugares-entrega" aria-label="Lugares de entrega" className="scroll-mt-20">
           <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xs">
@@ -2300,6 +2377,196 @@ export default function App() {
                 className="px-4 py-2 bg-slate-900 hover:bg-black text-white text-xs font-bold rounded-xl cursor-pointer"
               >
                 Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* 5.1 MODAL: SABER MÁS SOBRE LA TELA (POLISTRECH VS WIN)    */}
+      {/* ======================================================== */}
+      {modalTelasAbierto && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="titulo-modal-telas"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-xs font-montserrat animate-fade-in"
+        >
+          <div className="relative max-w-2xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-200 max-h-[90vh] flex flex-col">
+            {/* Cabecera */}
+            <div className="p-5 sm:p-6 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center text-emerald-400">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 id="titulo-modal-telas" className="font-black text-base sm:text-lg">
+                    Guía de Telas Pool Store
+                  </h3>
+                  <p className="text-xs text-slate-300">
+                    Conoce cómo es cada tela y elige la ideal para ti
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setModalTelasAbierto(false)}
+                className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-white/10 transition-colors cursor-pointer"
+                aria-label="Cerrar información de telas"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Contenido scrolleable */}
+            <div className="p-5 sm:p-6 overflow-y-auto space-y-6 text-xs text-slate-700">
+              {/* Tarjeta 1: Tela Polistrech */}
+              <div className="border border-slate-200 rounded-2xl p-4 sm:p-5 bg-slate-50 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-black text-sm">
+                      🩳
+                    </span>
+                    <div>
+                      <h4 className="font-black text-sm text-slate-900">
+                        Tela Polistrech (Shorts Clásicos)
+                      </h4>
+                      <span className="text-[11px] text-slate-500 font-semibold">
+                        Nuestros shorts más versátiles y vendidos
+                      </span>
+                    </div>
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full bg-slate-200 text-slate-800 font-extrabold text-[10px]">
+                    1x S/ 15 · 6x S/ 13.50 · 12x S/ 12
+                  </span>
+                </div>
+
+                <p className="text-slate-600 leading-relaxed">
+                  El <strong>Polistrech</strong> es un tejido elásticado de microfibra de poliéster de tacto suave y agradable a la piel. Su composición permite libertad total de movimiento sin deformarse, manteniendo su elasticidad tras constantes lavadas.
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                  <div className="bg-white p-2.5 rounded-xl border border-slate-200/80">
+                    <span className="font-bold text-slate-900 block mb-0.5">✨ Tacto y Sensación:</span>
+                    <span className="text-slate-600">Suave, elástica, fresca y ligera. No irrita ni raspa.</span>
+                  </div>
+                  <div className="bg-white p-2.5 rounded-xl border border-slate-200/80">
+                    <span className="font-bold text-slate-900 block mb-0.5">🪢 Pretina y Ajuste:</span>
+                    <span className="text-slate-600">Banda elástica reforzada con cordón pasador ajustable a medida.</span>
+                  </div>
+                  <div className="bg-white p-2.5 rounded-xl border border-slate-200/80">
+                    <span className="font-bold text-slate-900 block mb-0.5">🎯 Uso Recomendado:</span>
+                    <span className="text-slate-600">Uso diario, descanso en casa, gimnasio, playa, piscina o salidas casuales.</span>
+                  </div>
+                  <div className="bg-white p-2.5 rounded-xl border border-slate-200/80">
+                    <span className="font-bold text-slate-900 block mb-0.5">📐 Tallas y Variedad:</span>
+                    <span className="text-slate-600">Tallas XS, S, M, L y XL en 36 combinaciones de colores vibrantes.</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Tarjeta 2: Tela Win */}
+              <div className="border border-emerald-200 rounded-2xl p-4 sm:p-5 bg-emerald-50/60 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-black text-sm">
+                      ⚽
+                    </span>
+                    <div>
+                      <h4 className="font-black text-sm text-emerald-950">
+                        Tela Win Deportiva (Shorts de Clubes y Selecciones)
+                      </h4>
+                      <span className="text-[11px] text-emerald-700 font-semibold">
+                        Tejido deportivo técnico de alto rendimiento
+                      </span>
+                    </div>
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full bg-emerald-200 text-emerald-900 font-extrabold text-[10px]">
+                    1x S/ 25 · 3x S/ 69 · 12x S/ 240
+                  </span>
+                </div>
+
+                <p className="text-emerald-900/90 leading-relaxed">
+                  La <strong>Tela Win</strong> es el tejido oficial utilizado en indumentaria de alta competencia deportiva. Posee una microestructura transpirable que permite la rápida evaporación del sudor, evitando que la prenda se pegue o se vuelva pesada durante la actividad física.
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                  <div className="bg-white p-2.5 rounded-xl border border-emerald-200/80">
+                    <span className="font-bold text-emerald-950 block mb-0.5">💨 Transpirabilidad:</span>
+                    <span className="text-slate-600">Disipación de calor y sudor inmediata, secado ultra veloz al aire.</span>
+                  </div>
+                  <div className="bg-white p-2.5 rounded-xl border border-emerald-200/80">
+                    <span className="font-bold text-emerald-950 block mb-0.5">🛡️ Resistencia:</span>
+                    <span className="text-slate-600">Tejido tenaz resistente a fricción, tirones en cancha y lavado continuo.</span>
+                  </div>
+                  <div className="bg-white p-2.5 rounded-xl border border-emerald-200/80">
+                    <span className="font-bold text-emerald-950 block mb-0.5">⚽ Uso Recomendado:</span>
+                    <span className="text-slate-600">Fútbol, fulbito, running, crossfit, entrenamientos intensos y deporte al aire libre.</span>
+                  </div>
+                  <div className="bg-white p-2.5 rounded-xl border border-emerald-200/80">
+                    <span className="font-bold text-emerald-950 block mb-0.5">🏆 Equipos y Tallas:</span>
+                    <span className="text-slate-600">Modelos de Barcelona, Argentina, Real Madrid, Alianza, Universitario, etc. Talla L (Cintura 42 cm).</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Comparativa Rápida en Tabla */}
+              <div className="border border-slate-200 rounded-2xl overflow-hidden bg-white">
+                <div className="bg-slate-100 p-3 font-black text-slate-800 text-xs">
+                  Comparativa Rápida de Telas
+                </div>
+                <div className="divide-y divide-slate-100">
+                  <div className="grid grid-cols-3 p-3 gap-2 text-[11px]">
+                    <span className="font-bold text-slate-500">Característica</span>
+                    <span className="font-bold text-slate-900">Shorts Clásicos</span>
+                    <span className="font-bold text-emerald-800">Shorts Deportivos</span>
+                  </div>
+                  <div className="grid grid-cols-3 p-3 gap-2 text-[11px]">
+                    <span className="text-slate-500 font-medium">Tipo de tela</span>
+                    <span className="text-slate-800">Polistrech elástico</span>
+                    <span className="text-emerald-800 font-semibold">Win deportivo técnico</span>
+                  </div>
+                  <div className="grid grid-cols-3 p-3 gap-2 text-[11px]">
+                    <span className="text-slate-500 font-medium">Sensación al cuerpo</span>
+                    <span className="text-slate-800">Suave, elástico y cómodo</span>
+                    <span className="text-slate-800">Ultra liviano y fresco</span>
+                  </div>
+                  <div className="grid grid-cols-3 p-3 gap-2 text-[11px]">
+                    <span className="text-slate-500 font-medium">Ajuste de cintura</span>
+                    <span className="text-slate-800">Elástico con pasador</span>
+                    <span className="text-slate-800">Elástico anatómico</span>
+                  </div>
+                  <div className="grid grid-cols-3 p-3 gap-2 text-[11px]">
+                    <span className="text-slate-500 font-medium">Secado</span>
+                    <span className="text-slate-800">Rápido</span>
+                    <span className="text-emerald-800 font-semibold">Ultra rápido instantáneo</span>
+                  </div>
+                  <div className="grid grid-cols-3 p-3 gap-2 text-[11px]">
+                    <span className="text-slate-500 font-medium">Enfoque</span>
+                    <span className="text-slate-800">Diario, descanso y deporte</span>
+                    <span className="text-slate-800">Fútbol y alto rendimiento</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Consejos de cuidado */}
+              <div className="p-3.5 bg-blue-50/70 border border-blue-200/60 rounded-xl text-blue-900 text-xs flex items-start gap-2.5">
+                <span className="text-base shrink-0">💡</span>
+                <p className="leading-relaxed text-[11px]">
+                  <strong>Consejo de cuidado:</strong> Ambas telas son de excelente durabilidad. Se recomienda lavar con agua fría o tibia, secar a la sombra y no usar lejía para conservar los colores vivos por mucho más tiempo.
+                </p>
+              </div>
+            </div>
+
+            {/* Pie del modal */}
+            <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end">
+              <button
+                type="button"
+                onClick={() => setModalTelasAbierto(false)}
+                className="px-5 py-2.5 bg-slate-900 hover:bg-black text-white text-xs font-black rounded-xl transition-colors cursor-pointer"
+              >
+                Entendido, ver productos
               </button>
             </div>
           </div>
