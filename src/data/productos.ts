@@ -233,3 +233,121 @@ export function getImagenColorShort(colorShort: string): string {
   );
   return p ? p.imagen : '';
 }
+
+/**
+ * Normaliza una cadena de texto para crear un slug URL amigable
+ */
+export function slugifyText(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+/**
+ * Genera el slug canónico oficial para la URL de un producto.
+ * Ejemplos:
+ *  - Classic: "short-azul-noche-rayas-amarillas"
+ *  - Win: "short-win-barcelona" o "short-win-argentina-v2"
+ */
+export function getProductSlug(producto: Producto): string {
+  if (producto.tipoTela === 'win') {
+    const cleanId = producto.id.toLowerCase().replace(/^short-/, '');
+    return `short-${cleanId}`;
+  }
+  const colorShortSlug = slugifyText(producto.colorShort);
+  const colorRayasSlug = slugifyText(producto.colorRayas);
+  return `short-${colorShortSlug}-rayas-${colorRayasSlug}`;
+}
+
+/**
+ * Busca un producto en el catálogo por su slug o ID con máxima tolerancia y precisión.
+ */
+export function findProductoBySlug(slug: string): Producto | undefined {
+  if (!slug) return undefined;
+  const cleanSlug = decodeURIComponent(slug).toLowerCase().trim();
+
+  // 1. Coincidencia directa por slug canónico oficial
+  const matchCanonical = PRODUCTOS.find((p) => getProductSlug(p).toLowerCase() === cleanSlug);
+  if (matchCanonical) return matchCanonical;
+
+  // 2. Coincidencia directa por id original del producto
+  const matchId = PRODUCTOS.find((p) => p.id.toLowerCase() === cleanSlug);
+  if (matchId) return matchId;
+
+  // 3. Coincidencia por id quitando prefijo "short-"
+  const sinPrefijoShort = cleanSlug.replace(/^short-/, '');
+  const matchSinShort = PRODUCTOS.find((p) => p.id.toLowerCase() === sinPrefijoShort);
+  if (matchSinShort) return matchSinShort;
+
+  // 4. Coincidencia para shorts clásicos con variaciones de conector (rayas vs con-rayas)
+  const matchRayas = PRODUCTOS.find((p) => {
+    const idWithRayas = p.id.toLowerCase().replace(/-con-rayas-/, '-rayas-');
+    return idWithRayas === cleanSlug || idWithRayas === sinPrefijoShort;
+  });
+  if (matchRayas) return matchRayas;
+
+  // 5. Coincidencia para shorts win por id de equipo o variantes
+  const matchWin = PRODUCTOS.find((p) => {
+    if (p.tipoTela === 'win') {
+      const winId = p.id.toLowerCase();
+      return (
+        winId === cleanSlug ||
+        winId === `win-${cleanSlug}` ||
+        winId === `win-${sinPrefijoShort}` ||
+        `short-${winId}` === cleanSlug
+      );
+    }
+    return false;
+  });
+  if (matchWin) return matchWin;
+
+  // 6. Coincidencia por nombre completo slugificado
+  const matchPorNombre = PRODUCTOS.find((p) => {
+    const slugNombre = slugifyText(p.nombre);
+    return slugNombre === cleanSlug || `short-${slugNombre}` === cleanSlug;
+  });
+  if (matchPorNombre) return matchPorNombre;
+
+  return undefined;
+}
+
+/**
+ * Encuentra el grupo de short win al que pertenece un producto
+ */
+export function findGrupoWinByProductoId(productoId: string): GrupoShortWin | undefined {
+  return GRUPOS_SHORTS_WIN.find((g) => g.versiones.some((v) => v.id === productoId));
+}
+
+/**
+ * Obtiene productos relacionados para la ficha de producto
+ */
+export function getRelatedProducts(producto: Producto, limit: number = 4): Producto[] {
+  if (producto.tipoTela === 'win') {
+    const grupoActual = findGrupoWinByProductoId(producto.id);
+    const otrosGrupos = GRUPOS_SHORTS_WIN.filter((g) => g.id !== grupoActual?.id);
+    const prods: Producto[] = [];
+    for (const g of otrosGrupos) {
+      if (prods.length >= limit) break;
+      const v = g.versiones[0];
+      if (v?.producto) prods.push(v.producto);
+    }
+    return prods;
+  } else {
+    // Otros colores de shorts clásicos
+    const otrosColores = COLORES_SHORT_POLIESTER.filter(
+      (c) => c.toLowerCase() !== producto.colorShort.toLowerCase()
+    );
+    const seleccionados: Producto[] = [];
+    for (const c of otrosColores) {
+      if (seleccionados.length >= limit) break;
+      const rayas = getRayasPorColorShort(c);
+      const prod = findProductoPoliester(c, rayas[0] || '');
+      if (prod) seleccionados.push(prod);
+    }
+    return seleccionados;
+  }
+}
