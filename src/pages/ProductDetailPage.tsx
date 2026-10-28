@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import Breadcrumbs from '../components/Breadcrumbs';
 import {
   findProductoBySlug,
   getProductSlug,
@@ -234,95 +237,25 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-montserrat flex flex-col">
-      {/* 1. TOP MARQUEE BANNER */}
-      <div className="bg-slate-950 text-white text-[11px] sm:text-xs py-2 px-3 border-b border-slate-800 text-center font-bold">
-        <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
-          <span className="flex items-center gap-1.5 text-amber-400 mx-auto">
-            <Sparkles className="w-3.5 h-3.5 shrink-0" />
-            <span>
-              🔥 Promociones: <strong>1x S/ 25</strong> · <strong>3x S/ 69</strong> · <strong>12x S/ 240</strong> | Envíos a todo el Perú
-            </span>
-          </span>
-        </div>
-      </div>
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-montserrat flex flex-col selection:bg-emerald-500 selection:text-white">
+      {/* 1. Encabezado Oficial */}
+      <Navbar />
 
-      {/* 2. HEADER NAVBAR */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-          <Link
-            to="/"
-            className="flex items-center gap-2 text-slate-900 hover:opacity-85 transition-opacity"
-            title="Ir al inicio de Pool Store"
-          >
-            <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-black text-lg shadow-sm">
-              P
-            </div>
-            <div>
-              <span className="font-black text-base sm:text-lg tracking-tight block leading-none">
-                POOL STORE
-              </span>
-              <span className="text-[10px] text-slate-500 font-bold tracking-wider uppercase block">
-                Catálogo Oficial
-              </span>
-            </div>
-          </Link>
-
-          <div className="flex items-center gap-2">
-            <Link
-              to="/ropa/shorts"
-              className="px-3 py-1.5 text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors flex items-center gap-1.5"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span className="hidden sm:inline">Ver todos los shorts</span>
-            </Link>
-
-            {/* Botón Carrito */}
-            <button
-              type="button"
-              onClick={() => setModalCarritoAbierto(true)}
-              className="relative p-2.5 bg-slate-900 text-white rounded-xl hover:bg-black transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
-              aria-label="Abrir pedido"
-            >
-              <ShoppingBag className="w-4 h-4 text-emerald-400" />
-              <span className="hidden sm:inline text-xs font-black">Mi Pedido</span>
-              {totalPrendas > 0 && (
-                <span className="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 text-[11px] font-black flex items-center justify-center shadow-xs">
-                  {totalPrendas}
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* 3. BREADCRUMBS Y NAVEGACIÓN */}
-      <nav aria-label="Ruta de navegación" className="max-w-6xl mx-auto px-4 pt-4 pb-2 w-full">
-        <div className="flex items-center flex-wrap gap-1.5 text-xs text-slate-500 font-medium">
-          <Link to="/" className="hover:text-slate-900 transition-colors">
-            Inicio
-          </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <Link to="/ropa" className="hover:text-slate-900 transition-colors">
-            Ropa
-          </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <Link to="/ropa/shorts" className="hover:text-slate-900 transition-colors">
-            Shorts
-          </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <Link
-            to={isWin ? '/ropa/shorts/deportivos' : '/ropa/shorts/clasicos'}
-            className="hover:text-slate-900 transition-colors"
-          >
-            {isWin ? 'Shorts Deportivos' : 'Shorts Clásicos'}
-          </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <span className="text-slate-900 font-bold truncate max-w-[200px] sm:max-w-xs">
-            {productoActivo.nombre}
-          </span>
-        </div>
-      </nav>
+      {/* 2. Breadcrumbs de Navegación Jerárquica */}
+      <Breadcrumbs
+        items={[
+          { label: 'Productos', path: '/productos' },
+          { label: 'Ropa', path: '/ropa' },
+          { label: 'Shorts', path: '/ropa/shorts' },
+          {
+            label: isWin ? 'Shorts Deportivos' : 'Shorts Clásicos',
+            path: isWin ? '/ropa/shorts/deportivos' : '/ropa/shorts/clasicos',
+          },
+          { label: productoActivo.nombre },
+        ]}
+        showBackButton
+        backFallbackPath="/ropa/shorts"
+      />
 
       {/* 4. CONTENIDO PRINCIPAL: FICHA DEL PRODUCTO */}
       <main className="max-w-6xl mx-auto px-4 py-4 w-full flex-1">
@@ -827,50 +760,7 @@ export default function ProductDetailPage() {
         )}
       </main>
 
-      {/* 6. FOOTER */}
-      <footer className="mt-auto border-t border-slate-200 bg-white py-8 px-4 text-center text-xs text-slate-500 space-y-3 font-montserrat">
-        <p className="font-black text-slate-900 tracking-widest text-sm uppercase">
-          POOL STORE
-        </p>
-        <p className="text-slate-600">
-          Tu tienda virtual de confianza. Compras fáciles, atención directa y entregas coordinadas.
-        </p>
-        <div className="flex flex-wrap justify-center gap-4 text-xs font-bold text-slate-700">
-          <Link to="/" className="hover:text-black">
-            Inicio
-          </Link>
-          <span>·</span>
-          <Link to="/ropa" className="hover:text-black">
-            Ropa
-          </Link>
-          <span>·</span>
-          <Link to="/ropa/shorts" className="hover:text-black">
-            Shorts
-          </Link>
-          <span>·</span>
-          <button
-            type="button"
-            onClick={() => setModalGuiaTallas(true)}
-            className="hover:text-black cursor-pointer"
-          >
-            Guía de tallas
-          </button>
-          <span>·</span>
-          <button
-            type="button"
-            onClick={() => setModalTelasAbierto(true)}
-            className="hover:text-black cursor-pointer"
-          >
-            Saber más sobre la tela
-          </button>
-        </div>
-        <p className="text-[11px] text-slate-500">
-          Puntos de entrega: Plaza Cívica · Catedral · Banco de la Nación · Plazuela · Zonas cercanas · Envíos Shalom a todo el Perú
-        </p>
-        <p className="text-[10px] text-slate-400">
-          Pedidos WhatsApp: {POLESTORE_PHONE_DISPLAY} · Mi Yape: 903566655
-        </p>
-      </footer>
+      <Footer />
     </div>
   );
 }

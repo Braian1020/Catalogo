@@ -15,9 +15,9 @@ interface Props {
   esGratisPorPromo?: boolean;
 }
 
-// Punto centro acordado: Mercado Modelo de Chiclayo / Av. José Balta
+// Punto centro acordado: Centro de Chiclayo / Av. Balta y Av. Arica
 export const PUNTO_CENTRO_CHICLAYO = {
-  nombre: 'Mercado Modelo / Balta (Centro de Despacho)',
+  nombre: 'Centro de Chiclayo (Av. Balta y Av. Arica)',
   lat: -6.7719,
   lng: -79.8388,
 };

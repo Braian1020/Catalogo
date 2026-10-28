@@ -70,6 +70,14 @@ async function runPrerender() {
   const defaultImage = rawProductos[0]?.imagen || '';
   const paginasCategorias: PaginaEstatica[] = [
     {
+      relativeDir: 'productos',
+      title: 'Todos los Productos | Catálogo Oficial POOL STORE',
+      description:
+        'Explora todas las opciones disponibles en POOL STORE: 47 modelos de shorts deportivos y clásicos con precios reales y promociones por volumen.',
+      url: '/productos',
+      image: defaultImage,
+    },
+    {
       relativeDir: 'ropa',
       title: 'Ropa Deportiva y Urbana | Catálogo Oficial POOL STORE',
       description:
@@ -99,6 +107,22 @@ async function runPrerender() {
       description:
         'Shorts deportivos en tela Win microperforada de Real Madrid, Barcelona, Selección Argentina y más equipos. Promoción: 1x S/ 25, 3x S/ 69, 12x S/ 240.',
       url: '/ropa/shorts/deportivos',
+      image: defaultImage,
+    },
+    {
+      relativeDir: 'entregas',
+      title: 'Entregas y Envíos | POOL STORE Chiclayo & Perú',
+      description:
+        'Punto de entrega en Plaza Cívica de José Leonardo Ortiz, delivery en Chiclayo a S/ 1.50 por km desde Balta y Arica, y envíos a todo el Perú por Shalom.',
+      url: '/entregas',
+      image: defaultImage,
+    },
+    {
+      relativeDir: 'nosotros',
+      title: 'Sobre POOL STORE | Historia, Valores y Compromiso',
+      description:
+        'Descubre qué es POOL STORE: nuestra visión como tienda virtual multiproducto en Perú, compromiso con la calidad y atención personalizada.',
+      url: '/nosotros',
       image: defaultImage,
     },
   ];

@@ -1,5 +1,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import {
   SHORTS_POLIESTER,
   SHORTS_WIN,
@@ -288,114 +290,9 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
   const totalResultados = coloresClasicosFiltrados.length + gruposWinFiltrados.length;
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-montserrat flex flex-col">
-      {/* 1. TOP MARQUEE BANNER */}
-      <div className="bg-slate-950 text-white text-[11px] sm:text-xs py-2 px-3 border-b border-slate-800 text-center font-bold">
-        <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
-          <span className="flex items-center gap-1.5 text-amber-400 mx-auto">
-            <Sparkles className="w-3.5 h-3.5 shrink-0" />
-            <span>
-              🔥 Promociones: <strong>1x S/ 25</strong> · <strong>3x S/ 69</strong> · <strong>12x S/ 240</strong> | Envíos para Zonas cercanas y a todo el Perú
-            </span>
-          </span>
-        </div>
-      </div>
-
-      {/* 2. HEADER NAVBAR */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-          <Link
-            to="/"
-            className="flex items-center gap-2 text-slate-900 hover:opacity-85 transition-opacity"
-            title="Ir al inicio de Pool Store"
-          >
-            <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-black text-lg shadow-sm">
-              P
-            </div>
-            <div>
-              <span className="font-black text-base sm:text-lg tracking-tight block leading-none">
-                POOL STORE
-              </span>
-              <span className="text-[10px] text-slate-500 font-bold tracking-wider uppercase block">
-                Catálogo Oficial
-              </span>
-            </div>
-          </Link>
-
-          {/* Menú Desktop */}
-          <nav aria-label="Menú principal de navegación" className="hidden md:flex items-center gap-6 text-xs font-bold text-slate-600">
-            <Link to="/" className="hover:text-black transition-colors">
-              Inicio
-            </Link>
-            <Link to="/ropa" className="hover:text-black transition-colors">
-              Ropa
-            </Link>
-            <Link to="/ropa/shorts" className="hover:text-black transition-colors">
-              Shorts
-            </Link>
-            <button type="button" onClick={() => navegarA('guia-tallas')} className="hover:text-black cursor-pointer">
-              Guía de Tallas
-            </button>
-            <button type="button" onClick={() => navegarA('lugares-entrega')} className="hover:text-black cursor-pointer">
-              Puntos de Entrega
-            </button>
-            <button type="button" onClick={() => navegarA('quienes-somos')} className="hover:text-black cursor-pointer">
-              Quiénes Somos
-            </button>
-          </nav>
-
-          {/* Acciones Header */}
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setModalCarritoAbierto(true)}
-              className="relative p-2.5 bg-slate-900 text-white rounded-xl hover:bg-black transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
-              aria-label="Abrir mi pedido"
-            >
-              <ShoppingBag className="w-4 h-4 text-emerald-400" />
-              <span className="hidden sm:inline text-xs font-black">Mi Pedido</span>
-              {totalPrendas > 0 && (
-                <span className="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 text-[11px] font-black flex items-center justify-center shadow-xs">
-                  {totalPrendas}
-                </span>
-              )}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setMenuMovilAbierto(!menuMovilAbierto)}
-              className="p-2 text-slate-700 hover:text-black md:hidden rounded-lg hover:bg-slate-100"
-              aria-label="Abrir menú"
-            >
-              <Menu className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-
-        {/* Menú Móvil Desplegable */}
-        {menuMovilAbierto && (
-          <div className="md:hidden border-t border-slate-200 bg-white px-4 py-3 space-y-2 text-xs font-bold animate-fade-in shadow-lg">
-            <Link to="/" onClick={() => setMenuMovilAbierto(false)} className="block w-full text-left py-2 text-slate-700">
-              Inicio
-            </Link>
-            <Link to="/ropa" onClick={() => setMenuMovilAbierto(false)} className="block w-full text-left py-2 text-blue-600 font-black">
-              Ropa (Categoría Principal)
-            </Link>
-            <Link to="/ropa/shorts" onClick={() => setMenuMovilAbierto(false)} className="block w-full text-left py-2 text-slate-700">
-              Shorts (47 modelos)
-            </Link>
-            <button type="button" onClick={() => navegarA('guia-tallas')} className="block w-full text-left py-2 text-slate-700">
-              Guía de Tallas
-            </button>
-            <button type="button" onClick={() => navegarA('lugares-entrega')} className="block w-full text-left py-2 text-slate-700">
-              Puntos de Entrega en Chiclayo
-            </button>
-            <button type="button" onClick={() => navegarA('quienes-somos')} className="block w-full text-left py-2 text-slate-700">
-              Quiénes Somos
-            </button>
-          </div>
-        )}
-      </header>
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-montserrat flex flex-col selection:bg-emerald-500 selection:text-white">
+      {/* 1. HEADER NAVBAR UNIFICADO */}
+      <Navbar />
 
       {/* 3. HERO / RIBBON DE PROMOCIONES */}
       <section id="inicio" className="bg-slate-900 text-white pt-8 pb-10 px-4">
@@ -437,11 +334,15 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
 
       {/* 4. FILTROS Y BÚSQUEDA */}
       <section id="catalogo" className="max-w-6xl mx-auto px-4 py-6 w-full flex-1">
-        {/* Breadcrumb de navegación jerárquica */}
+        {/* Breadcrumb de navegación jerárquica con Productos */}
         <nav aria-label="Ruta de navegación" className="mb-6">
           <div className="flex items-center flex-wrap gap-1.5 text-xs text-slate-500 font-medium">
             <Link to="/" className="hover:text-slate-900 transition-colors">
               Inicio
+            </Link>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <Link to="/productos" className="hover:text-slate-900 transition-colors">
+              Productos
             </Link>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
             <Link to="/ropa" className="hover:text-slate-900 transition-colors">
@@ -467,6 +368,59 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
             )}
           </div>
         </nav>
+
+        {/* 2 TARJETAS DESTACADAS: Clásicos Polistrech & Deportivos Win */}
+        {categoriaActiva === 'todos' && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            <div
+              onClick={() => cambiarCategoria('clasicos')}
+              className="group p-5 rounded-2xl bg-white border border-slate-200 hover:border-slate-900 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="px-2.5 py-0.5 rounded-md bg-slate-900 text-white text-[10px] font-black uppercase tracking-wider">
+                    36 Combinaciones
+                  </span>
+                  <span className="text-xs font-bold text-slate-500">Tela Polistrech</span>
+                </div>
+                <h3 className="font-black text-lg text-slate-950 group-hover:text-blue-900 transition-colors">
+                  Shorts Clásicos Polistrech
+                </h3>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  12 colores principales con 36 variantes de rayas. Tela elástica, fresca, suave y bolsillos reforzados con cierre.
+                </p>
+              </div>
+              <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-900">
+                <span>Ver solo Clásicos</span>
+                <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+
+            <div
+              onClick={() => cambiarCategoria('deportivos')}
+              className="group p-5 rounded-2xl bg-white border border-slate-200 hover:border-blue-900 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="px-2.5 py-0.5 rounded-md bg-blue-600 text-white text-[10px] font-black uppercase tracking-wider">
+                    11 Modelos de Clubes
+                  </span>
+                  <span className="text-xs font-bold text-slate-500">Tela Win Deportiva</span>
+                </div>
+                <h3 className="font-black text-lg text-slate-950 group-hover:text-blue-900 transition-colors">
+                  Shorts Deportivos Tela Win
+                </h3>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Ediciones de Real Madrid, Barcelona, Selección Argentina, Bayern y más. Microperforada, ultra ligera y transpirable.
+                </p>
+              </div>
+              <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-900">
+                <span>Ver solo Deportivos</span>
+                <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Barra de Búsqueda y Filtros de Categoría */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
@@ -1146,50 +1100,8 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
         </section>
       </section>
 
-      {/* 5. FOOTER */}
-      <footer className="mt-auto border-t border-slate-200 bg-white py-8 px-4 text-center text-xs text-slate-500 space-y-3 font-montserrat">
-        <p className="font-black text-slate-900 tracking-widest text-sm uppercase">
-          POOL STORE
-        </p>
-        <p className="text-slate-600">
-          Tu tienda virtual de confianza. Compras fáciles, atención directa y entregas coordinadas.
-        </p>
-        <div className="flex flex-wrap justify-center gap-4 text-xs font-bold text-slate-700">
-          <Link to="/" className="hover:text-black">
-            Inicio
-          </Link>
-          <span>·</span>
-          <Link to="/ropa" className="hover:text-black">
-            Ropa
-          </Link>
-          <span>·</span>
-          <Link to="/ropa/shorts" className="hover:text-black">
-            Shorts
-          </Link>
-          <span>·</span>
-          <button type="button" onClick={() => navegarA('guia-tallas')} className="hover:text-black cursor-pointer">
-            Guía de tallas
-          </button>
-          <span>·</span>
-          <button type="button" onClick={() => navegarA('lugares-entrega')} className="hover:text-black cursor-pointer">
-            Lugares de entrega
-          </button>
-          <span>·</span>
-          <button type="button" onClick={() => navegarA('horarios-atencion')} className="hover:text-black cursor-pointer">
-            Horarios de atención
-          </button>
-          <span>·</span>
-          <button type="button" onClick={() => navegarA('quienes-somos')} className="hover:text-black cursor-pointer">
-            Quiénes somos
-          </button>
-        </div>
-        <p className="text-[11px] text-slate-500">
-          Puntos de entrega: Plaza Cívica · Catedral · Banco de la Nación · Plazuela · Zonas cercanas · Envíos Shalom a todo el Perú
-        </p>
-        <p className="text-[10px] text-slate-400">
-          Pedidos WhatsApp: {POLESTORE_PHONE_DISPLAY} · Mi Yape: 903566655
-        </p>
-      </footer>
+      {/* 5. FOOTER OFICIAL */}
+      <Footer />
     </div>
   );
 }
