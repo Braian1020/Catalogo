@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { POLESTORE_PHONE_DISPLAY, getWhatsAppUrl } from '../utils/whatsapp';
+import { getWhatsAppUrl } from '../utils/whatsapp';
 import {
   ShoppingBag,
   Menu,
   X,
   Sparkles,
   Truck,
-  Users,
   Compass,
   Home,
-  MessageCircle,
+  Headphones,
   ChevronRight,
   ArrowRight,
 } from 'lucide-react';
@@ -64,13 +63,7 @@ export default function Navbar({ hideBanner = false }: NavbarProps) {
       label: 'Entregas',
       path: '/entregas',
       icon: Truck,
-      sublabel: 'Plaza Cívica, delivery y envíos Shalom',
-    },
-    {
-      label: 'Nosotros',
-      path: '/nosotros',
-      icon: Users,
-      sublabel: 'Nuestra visión, valores y confianza',
+      sublabel: 'Puntos céntricos, delivery y envíos Shalom',
     },
   ];
 
@@ -88,7 +81,7 @@ export default function Navbar({ hideBanner = false }: NavbarProps) {
             <span className="flex items-center gap-1.5 text-amber-400 mx-auto">
               <Sparkles className="w-3.5 h-3.5 shrink-0 text-amber-300" />
               <span>
-                🔥 Promociones: <strong>1x S/ 25</strong> · <strong>3x S/ 69</strong> · <strong>12x S/ 240</strong> | Entregas coordinadas en Chiclayo y Perú
+                🔥 Promociones: <strong>1x S/ 25</strong> · <strong>3x S/ 69</strong> · <strong>12x S/ 240</strong> | Entregas coordinadas en Chiclayo y todo el Perú
               </span>
             </span>
           </div>
@@ -139,18 +132,19 @@ export default function Navbar({ hideBanner = false }: NavbarProps) {
             })}
           </nav>
 
-          {/* Action Buttons: Cart & Mobile Menu Toggle */}
+          {/* Action Buttons: Support, Cart & Mobile Menu Toggle */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* WhatsApp Quick Link (Desktop) */}
+            {/* Ícono de Soporte en lugar del número */}
             <a
-              href={getWhatsAppUrl('¡Hola POOL STORE! Vengo de su tienda virtual y deseo hacer una consulta.')}
+              href={getWhatsAppUrl('¡Hola POOL STORE! Vengo de su tienda virtual y deseo comunicarme con soporte.')}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden lg:flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors"
-              title="Escríbenos por WhatsApp"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 hover:text-slate-950 transition-colors cursor-pointer"
+              title="Soporte y Atención al Cliente"
+              aria-label="Soporte y Atención al Cliente"
             >
-              <MessageCircle className="w-4 h-4 text-emerald-600" />
-              <span>{POLESTORE_PHONE_DISPLAY}</span>
+              <Headphones className="w-4 h-4 text-emerald-600" />
+              <span className="hidden sm:inline font-bold">Soporte</span>
             </a>
 
             {/* Botón Mi Pedido */}
@@ -293,17 +287,17 @@ export default function Navbar({ hideBanner = false }: NavbarProps) {
                 </div>
               </div>
 
-              {/* Botón WhatsApp de contacto directo en la base del menú móvil */}
+              {/* Botón Soporte con ícono en la base del menú móvil */}
               <div className="p-4 border-t border-slate-100 bg-slate-50/80">
                 <a
-                  href={getWhatsAppUrl('¡Hola POOL STORE! Vengo de su tienda virtual y deseo hacer una consulta.')}
+                  href={getWhatsAppUrl('¡Hola POOL STORE! Vengo de su tienda virtual y deseo comunicarme con soporte.')}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-xl text-xs font-black text-white bg-emerald-600 hover:bg-emerald-500 shadow-sm transition-all active:scale-[0.98]"
+                  className="w-full flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-xl text-xs font-black text-white bg-slate-900 hover:bg-slate-800 shadow-sm transition-all active:scale-[0.98]"
                 >
-                  <MessageCircle className="w-4 h-4 text-white" />
-                  <span>Atención por WhatsApp: {POLESTORE_PHONE_DISPLAY}</span>
+                  <Headphones className="w-4 h-4 text-emerald-400" />
+                  <span>Soporte y Atención al Cliente</span>
                 </a>
                 <p className="text-[10px] text-center text-slate-400 mt-2">
                   POOL STORE · Compras fáciles y entregas coordinadas

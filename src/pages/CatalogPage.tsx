@@ -294,48 +294,9 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
       {/* 1. HEADER NAVBAR UNIFICADO */}
       <Navbar />
 
-      {/* 3. HERO / RIBBON DE PROMOCIONES */}
-      <section id="inicio" className="bg-slate-900 text-white pt-8 pb-10 px-4">
-        <div className="max-w-6xl mx-auto text-center space-y-4">
-          <span className="text-xs font-black uppercase tracking-widest text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full inline-block border border-emerald-800/40">
-            Catálogo Oficial 2026
-          </span>
-          <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-white max-w-2xl mx-auto">
-            Shorts Clásicos y Deportivos para Cada Momento
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
-            Explora las páginas individuales de cada producto para ver fotos ampliadas, combinaciones de rayas y compartir tus favoritos directamente.
-          </p>
-
-          {/* Tarjetas de Promoción */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl mx-auto pt-2">
-            <div className="p-3 bg-slate-800/80 border border-slate-700 rounded-2xl text-center">
-              <span className="text-[10px] text-slate-400 font-bold uppercase block">1 Unidad</span>
-              <strong className="text-base font-black text-white">S/ 25.00</strong>
-            </div>
-
-            <div className="p-3 bg-emerald-950/70 border border-emerald-600/50 rounded-2xl text-center relative overflow-hidden">
-              <span className="absolute top-1 right-2 text-[9px] font-black text-emerald-400 uppercase">
-                Recomendado
-              </span>
-              <span className="text-[10px] text-emerald-300 font-bold uppercase block">Promo x3</span>
-              <strong className="text-base font-black text-emerald-400">3 x S/ 69.00</strong>
-              <span className="block text-[10px] text-emerald-200">S/ 23.00 c/u</span>
-            </div>
-
-            <div className="p-3 bg-amber-950/70 border border-amber-600/50 rounded-2xl text-center">
-              <span className="text-[10px] text-amber-300 font-bold uppercase block">Mayorista / Docena</span>
-              <strong className="text-base font-black text-amber-400">12 x S/ 240.00</strong>
-              <span className="block text-[10px] text-amber-200">S/ 20.00 c/u</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. FILTROS Y BÚSQUEDA */}
-      <section id="catalogo" className="max-w-6xl mx-auto px-4 py-6 w-full flex-1">
-        {/* Breadcrumb de navegación jerárquica con Productos */}
-        <nav aria-label="Ruta de navegación" className="mb-6">
+      <main className="max-w-6xl mx-auto px-4 py-6 sm:py-8 w-full flex-1 space-y-6">
+        {/* Breadcrumb de navegación jerárquica con enlaces clicables y botón regresar */}
+        <nav aria-label="Ruta de navegación">
           <div className="flex items-center flex-wrap gap-1.5 text-xs text-slate-500 font-medium">
             <Link to="/" className="hover:text-slate-900 transition-colors">
               Inicio
@@ -368,6 +329,63 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
             )}
           </div>
         </nav>
+
+        {/* Category Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 pb-5">
+          <div>
+            <h1 className="text-2xl sm:text-4xl font-black text-slate-950 tracking-tight">
+              {categoriaActiva === 'clasicos'
+                ? 'Shorts Clásicos Polistrech'
+                : categoriaActiva === 'deportivos'
+                ? 'Shorts Deportivos Tela Win'
+                : 'Colección de Shorts'}
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-600 mt-1">
+              {categoriaActiva === 'clasicos'
+                ? '12 colores y 36 combinaciones de rayas con bolsillos con cierre. Tela elástica y fresca.'
+                : categoriaActiva === 'deportivos'
+                ? '11 diseños oficiales y alternativos en tela Win microperforada de alta transpirabilidad.'
+                : '47 modelos disponibles para deporte, entrenamiento y uso casual con entregas en Chiclayo y Perú.'}
+            </p>
+          </div>
+
+          {/* Category Tabs */}
+          <div className="flex items-center flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => cambiarCategoria('todos')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                categoriaActiva === 'todos'
+                  ? 'bg-slate-950 text-white shadow-xs'
+                  : 'bg-white hover:bg-slate-100 border border-slate-200 text-slate-800'
+              }`}
+            >
+              Todos ({SHORTS_POLIESTER.length + SHORTS_WIN.length})
+            </button>
+            <button
+              type="button"
+              onClick={() => cambiarCategoria('clasicos')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                categoriaActiva === 'clasicos'
+                  ? 'bg-slate-950 text-white shadow-xs'
+                  : 'bg-white hover:bg-slate-100 border border-slate-200 text-slate-800'
+              }`}
+            >
+              Shorts Clásicos ({SHORTS_POLIESTER.length})
+            </button>
+            <button
+              type="button"
+              onClick={() => cambiarCategoria('deportivos')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                categoriaActiva === 'deportivos'
+                  ? 'bg-slate-950 text-white shadow-xs'
+                  : 'bg-white hover:bg-slate-100 border border-slate-200 text-slate-800'
+              }`}
+            >
+              Shorts Deportivos ({SHORTS_WIN.length})
+            </button>
+          </div>
+        </div>
 
         {/* 2 TARJETAS DESTACADAS: Clásicos Polistrech & Deportivos Win */}
         {categoriaActiva === 'todos' && (
@@ -1014,91 +1032,7 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
           </div>
         </section>
 
-        {/* ======================================================== */}
-        {/* SECCIÓN 4: HORARIOS DE ATENCIÓN                          */}
-        {/* ======================================================== */}
-        <section id="horarios-atencion" aria-label="Horarios de atención" className="mb-12 scroll-mt-20">
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xs">
-            <div className="max-w-2xl mx-auto text-center space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center mx-auto shadow-xs">
-                <Clock className="w-6 h-6 text-emerald-400" />
-              </div>
-
-              <div>
-                <span className="text-[11px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full inline-block mb-2">
-                  Atención Continua
-                </span>
-                <h2 className="text-xl sm:text-2xl font-black text-slate-900">
-                  Horarios de Atención
-                </h2>
-                <p className="text-base font-extrabold text-slate-800 mt-1">
-                  Atendemos todos los días, de lunes a domingo.
-                </p>
-              </div>
-
-              <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
-                Estamos a tu disposición para responder dudas, verificar stock de modelos y tallas, y programar tus entregas o envíos sin complicaciones.
-              </p>
-
-              <div className="pt-2">
-                <a
-                  href={`https://wa.me/51${POLESTORE_PHONE_DISPLAY.replace(/\D/g, '')}?text=Hola%20Pool%20Store%20%F0%9F%91%8B%2C%20deseo%20consultar%20disponibilidad%20para%20coordinar%20un%20pedido.`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-3 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-xl text-xs font-black shadow-md hover:shadow-emerald-500/25 transition-all cursor-pointer"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Consultar disponibilidad y coordinar pedidos</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ======================================================== */}
-        {/* SECCIÓN 5: QUIÉNES SOMOS                                 */}
-        {/* ======================================================== */}
-        <section id="quienes-somos" aria-label="Quiénes somos" className="mb-12 scroll-mt-20">
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xs">
-            <div className="max-w-2xl mx-auto space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-xs">
-                  <Users className="w-5 h-5 text-amber-400" />
-                </div>
-                <div>
-                  <h2 className="text-lg sm:text-xl font-black text-slate-900">
-                    Quiénes Somos
-                  </h2>
-                  <p className="text-xs text-slate-500">
-                    Conoce más sobre Pool Store.
-                  </p>
-                </div>
-              </div>
-
-              <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100">
-                <p className="text-slate-800 text-sm leading-relaxed font-medium">
-                  Somos <strong>POOL STORE</strong>, una tienda 100 % virtual dedicada a ofrecer productos de calidad a precios accesibles. Actualmente contamos con shorts clásicos y deportivos, y próximamente incorporaremos nuevos productos a nuestro catálogo. Compras fáciles, atención directa y entregas coordinadas en Chiclayo.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-center">
-                <div className="p-3 rounded-xl bg-slate-100/70 border border-slate-200/50">
-                  <strong className="text-slate-900 block font-black">100 % Virtual</strong>
-                  <span className="text-slate-500 text-[11px]">Compra rápida desde tu celular</span>
-                </div>
-                <div className="p-3 rounded-xl bg-slate-100/70 border border-slate-200/50">
-                  <strong className="text-slate-900 block font-black">Atención Directa</strong>
-                  <span className="text-slate-500 text-[11px]">Coordinación personalizada</span>
-                </div>
-                <div className="p-3 rounded-xl bg-slate-100/70 border border-slate-200/50">
-                  <strong className="text-slate-900 block font-black">Precios Accesibles</strong>
-                  <span className="text-slate-500 text-[11px]">Calidad garantizada</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </section>
+      </main>
 
       {/* 5. FOOTER OFICIAL */}
       <Footer />

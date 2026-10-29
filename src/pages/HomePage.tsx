@@ -2,21 +2,13 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { POLESTORE_PHONE_DISPLAY, getWhatsAppUrl } from '../utils/whatsapp';
-import {
-  ArrowRight,
-  ShieldCheck,
-  Truck,
-  MessageCircle,
-  ThumbsUp,
-  MapPin,
-} from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function HomePage() {
   useEffect(() => {
     document.title = 'POOL STORE | Tu tienda virtual, todo en un solo lugar';
     const description =
-      'En POOL STORE seleccionamos productos de calidad a precios accesibles. Compras fáciles, atención directa por WhatsApp y entregas coordinadas.';
+      'Descubre productos de calidad a precios accesibles. Compra fácil, atención directa y entregas coordinadas en Chiclayo.';
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute('content', description);
 
@@ -28,174 +20,63 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-montserrat flex flex-col selection:bg-emerald-500 selection:text-white">
+    <div className="min-h-screen bg-slate-950 text-white font-montserrat flex flex-col selection:bg-emerald-500 selection:text-white">
       <Navbar />
 
-      <main className="flex-1">
-        {/* PORTADA PRINCIPAL — HERO MINIMALISTA */}
-        <section className="relative overflow-hidden bg-white border-b border-slate-200/80 py-12 lg:py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+      <main className="flex-1 flex flex-col">
+        {/* PORTADA HERO: IMAGEN COMPLETA DE FONDO CON PRODUCTOS A LA DERECHA Y TEXTO A LA IZQUIERDA */}
+        <section
+          aria-label="Portada principal de POOL STORE"
+          className="relative w-full flex-1 min-h-[520px] sm:min-h-[580px] lg:min-h-[620px] xl:min-h-[660px] flex items-center bg-slate-950 overflow-hidden"
+        >
+          {/* Capa de imagen de fondo completa (cover) */}
+          <div
+            className="absolute inset-0 w-full h-full bg-cover bg-no-repeat bg-[position:85%_center] sm:bg-[position:80%_center] md:bg-[position:76%_center] lg:bg-[position:right_center]"
+            style={{
+              backgroundImage: `url('/assets/aistudio/Nuevo_Fondo_9d1115e2.png')`,
+            }}
+          />
+
+          {/* Degradado oscuro sutil para máxima legibilidad del texto en el lado izquierdo */}
+          <div
+            className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/75 to-transparent sm:via-slate-950/55 sm:to-slate-950/10 lg:via-slate-950/40 lg:to-transparent pointer-events-none"
+            aria-hidden="true"
+          />
+          {/* Viñeta sutil vertical para suavizar bordes */}
+          <div
+            className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-slate-950/20 pointer-events-none"
+            aria-hidden="true"
+          />
+
+          {/* Contenido alineado a la izquierda directamente sobre el fondo */}
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-16 sm:py-20 lg:py-24">
+            <div className="max-w-xl lg:max-w-2xl space-y-6 sm:space-y-7 text-left">
               
-              {/* Columna Izquierda: Información Principal y Accesos */}
-              <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
-                <div className="space-y-3">
-                  <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight leading-[1.1]">
-                    POOL STORE
-                    <span className="block text-2xl sm:text-3xl lg:text-4xl font-extrabold text-blue-900 mt-1.5">
-                      Tu tienda virtual, todo en un solo lugar.
-                    </span>
-                  </h1>
-                  <p className="text-sm sm:text-base text-slate-600 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
-                    Descubre una manera sencilla de comprar. En POOL STORE seleccionamos productos de calidad a precios accesibles, con atención personalizada, compras fáciles y entregas coordinadas.
-                  </p>
-                </div>
+              {/* Títulos y descripción */}
+              <div className="space-y-3 sm:space-y-4">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white tracking-tight leading-[1.05] drop-shadow-md">
+                  POOL STORE
+                  <span className="block text-2xl sm:text-3xl lg:text-4xl xl:text-[2.65rem] font-extrabold text-white/95 mt-2 sm:mt-3 tracking-tight leading-snug">
+                    Tu tienda virtual, todo en un solo lugar.
+                  </span>
+                </h1>
 
-                {/* Botones de Acción */}
-                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-1">
-                  <Link
-                    to="/productos"
-                    className="w-full sm:w-auto px-8 py-3.5 bg-slate-950 hover:bg-slate-800 text-white font-bold text-sm rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group cursor-pointer"
-                  >
-                    <span>Explorar productos</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-emerald-400" />
-                  </Link>
-
-                  <Link
-                    to="/nosotros"
-                    className="w-full sm:w-auto px-6 py-3.5 bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm rounded-xl border border-slate-300 hover:border-slate-400 transition-colors flex items-center justify-center cursor-pointer shadow-xs"
-                  >
-                    <span>Conoce POOL STORE</span>
-                  </Link>
-                </div>
-              </div>
-
-              {/* Columna Derecha: Composición Visual Limpia */}
-              <div className="lg:col-span-6">
-                <div className="relative mx-auto rounded-3xl overflow-hidden shadow-xl border border-slate-200/90 bg-slate-900">
-                  <img
-                    src="/assets/aistudio/Fondo_Page_5fdaf0bc"
-                    alt="POOL STORE - Catálogo Oficial"
-                    className="w-full h-auto object-cover object-center"
-                    loading="eager"
-                  />
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {/* POR QUÉ COMPRAR EN POOL STORE (Las 3 B, Envíos coordinados y Atención) */}
-        <section className="py-12 sm:py-16 bg-white border-b border-slate-200">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="text-center max-w-xl mx-auto mb-10">
-              <span className="text-xs font-black uppercase tracking-wider text-blue-900 block mb-1">
-                Nuestra Garantía
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">
-                ¿Por qué comprar en POOL STORE?
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Beneficio 1: Las 3 B */}
-              <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-3">
-                <div className="w-12 h-12 rounded-xl bg-slate-900 text-emerald-400 flex items-center justify-center shrink-0">
-                  <ThumbsUp className="w-6 h-6" />
-                </div>
-                <h3 className="font-bold text-lg text-slate-950">Las 3 B</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  <strong>Bueno, Bonito y Barato:</strong> Prendas y artículos seleccionados con telas resistentes, costuras reforzadas y cierres duraderos a precios justos y accesibles.
+                <p className="text-sm sm:text-base lg:text-lg text-slate-200 font-normal leading-relaxed max-w-lg drop-shadow-sm pt-1">
+                  Descubre productos de calidad a precios accesibles. Compra fácil, atención directa y entregas coordinadas en Chiclayo.
                 </p>
               </div>
 
-              {/* Beneficio 2: Envíos coordinados */}
-              <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-3">
-                <div className="w-12 h-12 rounded-xl bg-slate-900 text-blue-400 flex items-center justify-center shrink-0">
-                  <Truck className="w-6 h-6" />
-                </div>
-                <h3 className="font-bold text-lg text-slate-950">Envíos coordinados</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Entrega en <strong>Plaza Cívica</strong> de José Leonardo Ortiz, delivery a domicilio en Chiclayo a solo <strong>S/ 1.50 por kilómetro</strong> (desde Balta y Arica) y envíos a todo el Perú por Shalom.
-                </p>
+              {/* Botón de acción directo al catálogo */}
+              <div className="pt-2 sm:pt-4">
+                <Link
+                  to="/productos"
+                  className="inline-flex items-center justify-center gap-3 px-8 sm:px-9 py-4 bg-white hover:bg-slate-100 text-slate-950 font-black text-sm sm:text-base rounded-xl shadow-xl hover:shadow-2xl transition-all duration-200 group cursor-pointer active:scale-95"
+                >
+                  <span>Explorar productos</span>
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-900 group-hover:translate-x-1.5 transition-transform duration-200" />
+                </Link>
               </div>
 
-              {/* Beneficio 3: Atención personalizada */}
-              <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-3">
-                <div className="w-12 h-12 rounded-xl bg-slate-900 text-teal-400 flex items-center justify-center shrink-0">
-                  <MessageCircle className="w-6 h-6" />
-                </div>
-                <h3 className="font-bold text-lg text-slate-950">Atención directa</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Asesoría humana por WhatsApp ({POLESTORE_PHONE_DISPLAY}) para resolver dudas sobre tallas, disponibilidad de colores y coordinar la entrega en minutos.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CÓMO COMPRAR */}
-        <section className="py-12 sm:py-16 bg-slate-50">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="text-center max-w-xl mx-auto mb-10">
-              <span className="text-xs font-black uppercase tracking-wider text-blue-900 block mb-1">
-                Fácil y directo
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">
-                ¿Cómo comprar en POOL STORE?
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Paso 1 */}
-              <div className="p-6 rounded-2xl bg-white border border-slate-200 flex flex-col justify-between">
-                <div>
-                  <div className="w-10 h-10 rounded-xl bg-slate-900 text-white font-black text-sm flex items-center justify-center mb-4">
-                    1
-                  </div>
-                  <h3 className="font-bold text-base text-slate-950 mb-2">Elige tus productos</h3>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Ingresa a productos, selecciona tus modelos favoritos, elige tus tallas y variantes, y agrégalos a tu pedido.
-                  </p>
-                </div>
-              </div>
-
-              {/* Paso 2 */}
-              <div className="p-6 rounded-2xl bg-white border border-slate-200 flex flex-col justify-between">
-                <div>
-                  <div className="w-10 h-10 rounded-xl bg-slate-900 text-white font-black text-sm flex items-center justify-center mb-4">
-                    2
-                  </div>
-                  <h3 className="font-bold text-base text-slate-950 mb-2">Confirma por WhatsApp</h3>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Con un solo clic envías tu pedido detallado a nuestro WhatsApp oficial para confirmar stock y datos de entrega.
-                  </p>
-                </div>
-              </div>
-
-              {/* Paso 3 */}
-              <div className="p-6 rounded-2xl bg-white border border-slate-200 flex flex-col justify-between">
-                <div>
-                  <div className="w-10 h-10 rounded-xl bg-slate-900 text-white font-black text-sm flex items-center justify-center mb-4">
-                    3
-                  </div>
-                  <h3 className="font-bold text-base text-slate-950 mb-2">Recibe o recoge tu pedido</h3>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Recoge en Plaza Cívica, recibe por delivery a domicilio o retira en la agencia Shalom de tu ciudad.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 text-center">
-              <Link
-                to="/productos"
-                className="inline-flex items-center gap-2 px-7 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-sm transition-all"
-              >
-                <span>Ir al catálogo de productos</span>
-                <ArrowRight className="w-4 h-4 text-emerald-400" />
-              </Link>
             </div>
           </div>
         </section>
@@ -205,3 +86,4 @@ export default function HomePage() {
     </div>
   );
 }
+

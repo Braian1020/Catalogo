@@ -113,7 +113,7 @@ async function runPrerender() {
       relativeDir: 'entregas',
       title: 'Entregas y Envíos | POOL STORE Chiclayo & Perú',
       description:
-        'Punto de entrega en Plaza Cívica de José Leonardo Ortiz, delivery en Chiclayo a S/ 1.50 por km desde Balta y Arica, y envíos a todo el Perú por Shalom.',
+        'Puntos de entrega gratuitos en Chiclayo: Plaza Cívica, Catedral, Banco de la Nación y La Plazuela. Delivery a domicilio confirmado por WhatsApp y envíos a todo el Perú por Shalom.',
       url: '/entregas',
       image: defaultImage,
     },

@@ -88,6 +88,8 @@ interface CartContextType {
   setDireccionEntrega: (d: string) => void;
   referenciaEntrega: string;
   setReferenciaEntrega: (r: string) => void;
+  compartirUbicacionPorWhatsApp: boolean;
+  setCompartirUbicacionPorWhatsApp: (c: boolean) => void;
   agenciaShalom: string;
   setAgenciaShalom: (a: string) => void;
   nombreCliente: string;
@@ -141,6 +143,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [puntoCentrico, setPuntoCentrico] = useState<string>(PUNTOS_CENTRICOS_CHICLAYO[0].nombre);
   const [direccionEntrega, setDireccionEntrega] = useState<string>('');
   const [referenciaEntrega, setReferenciaEntrega] = useState<string>('');
+  const [compartirUbicacionPorWhatsApp, setCompartirUbicacionPorWhatsApp] = useState<boolean>(false);
   const [agenciaShalom, setAgenciaShalom] = useState<string>('Agencia Central Chiclayo');
   const [nombreCliente, setNombreCliente] = useState<string>('');
   const [telefonoCliente, setTelefonoCliente] = useState<string>('');
@@ -221,12 +224,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const deliveryGratisDesbloqueado = totalPrendas >= 3;
 
-  const costoEnvioAplicado = useMemo(() => {
-    if (modalidadEntrega === 'domicilio') {
-      return deliveryGratisDesbloqueado ? 0 : 4.0;
-    }
-    return 0;
-  }, [modalidadEntrega, deliveryGratisDesbloqueado]);
+  // No calculamos tarifas ficticias: si no es gratis por promo, queda "Por confirmar vía WhatsApp"
+  const costoEnvioAplicado = 0;
 
   const { totalGeneral, subtotalPrendas, subtotalRegular, ahorroTotal } = useMemo(() => {
     let subtotal = 0;
@@ -243,11 +242,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     return {
       subtotalPrendas: subtotal,
-      totalGeneral: subtotal + costoEnvioAplicado,
+      totalGeneral: subtotal, // Sin sumar montos ficticios
       subtotalRegular: regular,
       ahorroTotal: Math.max(0, regular - subtotal),
     };
-  }, [carrito, precioUnitarioPoliester, precioUnitarioWin, costoEnvioAplicado]);
+  }, [carrito, precioUnitarioPoliester, precioUnitarioWin]);
 
   const detallesEntrega = useMemo(() => {
     const textoPago =
@@ -257,15 +256,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     if (modalidadEntrega === 'domicilio') {
       const costoTxt = deliveryGratisDesbloqueado
-        ? '¡GRATIS por promo desde 3 shorts!'
-        : 'S/ 4.00 (Tarifa Chiclayo / JLO / La Victoria)';
+        ? '¡GRATIS por promoción desde 3 prendas!'
+        : 'Por confirmar por WhatsApp según dirección';
+
+      const dirTxt =
+        compartirUbicacionPorWhatsApp || !direccionEntrega.trim()
+          ? '• Dirección: Compartiré mi ubicación o dirección por WhatsApp'
+          : `• Dirección: ${direccionEntrega.trim()}`;
 
       return [
-        `📍 *Modalidad:* A Domicilio (Contraentrega)`,
-        direccionEntrega.trim()
-          ? `• Dirección: ${direccionEntrega.trim()}`
-          : `• Dirección: (A coordinar por chat)`,
-        referenciaEntrega.trim()
+        `📍 *Modalidad:* A Domicilio en Chiclayo (Contraentrega)`,
+        dirTxt,
+        referenciaEntrega.trim() && !compartirUbicacionPorWhatsApp
           ? `• Referencia: ${referenciaEntrega.trim()}`
           : null,
         `• Costo de delivery: ${costoTxt}`,
@@ -299,6 +301,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     puntoCentrico,
     direccionEntrega,
     referenciaEntrega,
+    compartirUbicacionPorWhatsApp,
     agenciaShalom,
     dniCliente,
     deliveryGratisDesbloqueado,
@@ -321,6 +324,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       modalidadEntrega,
       direccionEntrega,
       referenciaEntrega,
+      compartirUbicacionPorWhatsApp,
+      deliveryGratisDesbloqueado,
       puntoCentrico,
       destinoShalom: agenciaShalom,
       metodoPago,
@@ -331,20 +336,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     carrito,
     precioUnitarioWin,
     precioUnitarioPoliester,
-    nombreCliente,
-    telefonoCliente,
-    dniCliente,
     modalidadEntrega,
     direccionEntrega,
+    referenciaEntrega,
+    compartirUbicacionPorWhatsApp,
+    deliveryGratisDesbloqueado,
     puntoCentrico,
     agenciaShalom,
-    referenciaEntrega,
     metodoPago,
-    totalPrendas,
     subtotalPrendas,
     costoEnvioAplicado,
     totalGeneral,
-    notasCliente,
+    ahorroTotal,
     mostrarToast,
   ]);
 
@@ -385,6 +388,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setDireccionEntrega,
     referenciaEntrega,
     setReferenciaEntrega,
+    compartirUbicacionPorWhatsApp,
+    setCompartirUbicacionPorWhatsApp,
     agenciaShalom,
     setAgenciaShalom,
     nombreCliente,

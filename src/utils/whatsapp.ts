@@ -14,6 +14,8 @@ export interface OpcionesMensajePedido {
   modalidadEntrega?: 'domicilio' | 'punto_centrico' | 'shalom';
   direccionEntrega?: string;
   referenciaEntrega?: string;
+  compartirUbicacionPorWhatsApp?: boolean;
+  deliveryGratisDesbloqueado?: boolean;
   puntoCentrico?: string;
   destinoShalom?: string;
   metodoPago?: 'contraentrega' | 'yape';
@@ -41,6 +43,8 @@ export function generarMensajeWhatsApp(
   let modalidadEntrega: 'domicilio' | 'punto_centrico' | 'shalom' = 'domicilio';
   let direccionEntrega = '';
   let referenciaEntrega = '';
+  let compartirUbicacionPorWhatsApp = false;
+  let deliveryGratisDesbloqueado = false;
   let puntoCentrico = 'Plaza Cívica';
   let destinoShalom = '';
   let metodoPago: 'contraentrega' | 'yape' = 'contraentrega';
@@ -63,6 +67,8 @@ export function generarMensajeWhatsApp(
     modalidadEntrega = itemsOrOptions.modalidadEntrega || 'domicilio';
     direccionEntrega = itemsOrOptions.direccionEntrega || '';
     referenciaEntrega = itemsOrOptions.referenciaEntrega || '';
+    compartirUbicacionPorWhatsApp = !!itemsOrOptions.compartirUbicacionPorWhatsApp;
+    deliveryGratisDesbloqueado = !!itemsOrOptions.deliveryGratisDesbloqueado;
     puntoCentrico = itemsOrOptions.puntoCentrico || 'Plaza Cívica';
     destinoShalom = itemsOrOptions.destinoShalom || '';
     metodoPago = itemsOrOptions.metodoPago || 'contraentrega';
@@ -98,7 +104,7 @@ export function generarMensajeWhatsApp(
   const subtotalFinal = subtotalPrendas !== undefined ? subtotalPrendas : subtotalCalculado;
   const ahorroFinal =
     ahorroTotal !== undefined ? ahorroTotal : Math.max(0, regularCalculado - subtotalCalculado);
-  const envioFinal = costoEnvio !== undefined ? costoEnvio : Math.max(0, total - subtotalFinal);
+  const esEnvioGratis = deliveryGratisDesbloqueado || totalPrendas >= 3;
 
   // 1. Encabezado
   const lines: string[] = [
@@ -108,7 +114,7 @@ export function generarMensajeWhatsApp(
     '📦 *DETALLE DE PRODUCTOS:*',
   ];
 
-  // 2. Lista numerada de productos (sin URLs de fotos para mantenerlo compacto y limpio)
+  // 2. Lista numerada de productos
   items.forEach((item, index) => {
     const num = index + 1;
     const p = item.producto;
@@ -154,35 +160,52 @@ export function generarMensajeWhatsApp(
     lines.push(`• Descuento aplicado: *-S/ ${ahorroFinal.toFixed(2)}*`);
   }
 
-  const textoDelivery =
-    envioFinal === 0
-      ? 'S/ 0.00 (Gratis)'
-      : `S/ ${envioFinal.toFixed(2)}`;
-  lines.push(`• Costo de envío: ${textoDelivery}`);
-
-  lines.push('────────────────────────────');
-  lines.push(`💰 *TOTAL GENERAL A PAGAR: S/ ${total.toFixed(2)}*`);
+  // Costo de envío según modalidad
+  if (modalidadEntrega === 'domicilio') {
+    if (esEnvioGratis) {
+      lines.push('• Costo de envío: *¡Gratis! (Promoción por 3+ prendas)*');
+      lines.push('────────────────────────────');
+      lines.push(`💰 *TOTAL A PAGAR: S/ ${subtotalFinal.toFixed(2)}*`);
+    } else {
+      lines.push('• Costo de envío: *Por confirmar* (según tu dirección)');
+      lines.push('────────────────────────────');
+      lines.push(`💰 *SUBTOTAL PRENDAS: S/ ${subtotalFinal.toFixed(2)}*`);
+      lines.push('*(El importe final incluirá el envío confirmado por WhatsApp)*');
+    }
+  } else if (modalidadEntrega === 'punto_centrico') {
+    lines.push('• Costo de envío: *S/ 0.00 (Gratis en punto de encuentro)*');
+    lines.push('────────────────────────────');
+    lines.push(`💰 *TOTAL GENERAL A PAGAR: S/ ${subtotalFinal.toFixed(2)}*`);
+  } else {
+    lines.push('• Costo de envío: *Pago en destino Shalom*');
+    lines.push('────────────────────────────');
+    lines.push(`💰 *TOTAL PRENDAS A PAGAR: S/ ${subtotalFinal.toFixed(2)}*`);
+  }
   lines.push('────────────────────────────');
   lines.push('');
 
   // 4. Datos de Entrega y Pago
   if (detallesRaw) {
-    // Si vino texto preformateado, limpiamos caracteres extraños y lo anexamos
     lines.push(detallesRaw.trim());
   } else {
     lines.push('📍 *ENTREGA:*');
     if (modalidadEntrega === 'domicilio') {
-      lines.push('• Modalidad: A Domicilio (Contraentrega)');
-      if (direccionEntrega.trim()) {
-        lines.push(`• Dirección: ${direccionEntrega.trim()}`);
+      lines.push('• Modalidad: A Domicilio en Chiclayo');
+      if (compartirUbicacionPorWhatsApp || !direccionEntrega.trim()) {
+        lines.push('• Dirección: Compartiré mi ubicación o dirección por este chat');
       } else {
-        lines.push('• Dirección: (Coordinar por chat)');
+        lines.push(`• Dirección: ${direccionEntrega.trim()}`);
+        if (referenciaEntrega.trim()) {
+          lines.push(`• Referencia: ${referenciaEntrega.trim()}`);
+        }
       }
-      if (referenciaEntrega.trim()) {
-        lines.push(`• Referencia: ${referenciaEntrega.trim()}`);
+      if (esEnvioGratis) {
+        lines.push('• Tarifa de envío: ¡GRATIS por promoción de 3 o más prendas!');
+      } else {
+        lines.push('• Tarifa de envío: A coordinar por WhatsApp según ubicación');
       }
     } else if (modalidadEntrega === 'punto_centrico') {
-      lines.push('• Modalidad: Punto Céntrico (Gratis S/ 0)');
+      lines.push('• Modalidad: Punto Céntrico en Chiclayo (Gratis S/ 0)');
       lines.push(`• Punto de encuentro: ${puntoCentrico}`);
     } else {
       lines.push('• Modalidad: Envío Shalom (Provincias)');
@@ -200,7 +223,7 @@ export function generarMensajeWhatsApp(
   }
 
   lines.push('');
-  lines.push('¿Me confirmas disponibilidad para despachar mi pedido?');
+  lines.push('¿Me confirmas disponibilidad para coordinar el despacho?');
 
   return lines.join('\n');
 }

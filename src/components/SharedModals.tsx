@@ -51,6 +51,8 @@ export default function SharedModals() {
     setDireccionEntrega,
     referenciaEntrega,
     setReferenciaEntrega,
+    compartirUbicacionPorWhatsApp,
+    setCompartirUbicacionPorWhatsApp,
     agenciaShalom,
     setAgenciaShalom,
     nombreCliente,
@@ -367,32 +369,59 @@ export default function SharedModals() {
                     </div>
 
                     {modalidadEntrega === 'domicilio' && (
-                      <div className="space-y-2 pt-1 animate-fade-in">
-                        <input
-                          type="text"
-                          value={direccionEntrega}
-                          onChange={(e) => setDireccionEntrega(e.target.value)}
-                          placeholder="Calle, número, urbanización / barrio"
-                          className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
-                        />
-                        <input
-                          type="text"
-                          value={referenciaEntrega}
-                          onChange={(e) => setReferenciaEntrega(e.target.value)}
-                          placeholder="Referencia (cerca a parque, tienda, etc.)"
-                          className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
-                        />
-                        <p className="text-[10px] text-slate-500">
+                      <div className="space-y-2.5 pt-1 animate-fade-in">
+                        {/* Opción de compartir ubicación por WhatsApp o escribir dirección */}
+                        <div className="flex items-center gap-2 p-2.5 bg-slate-100 rounded-xl">
+                          <input
+                            type="checkbox"
+                            id="chk-compartir-wa"
+                            checked={compartirUbicacionPorWhatsApp}
+                            onChange={(e) => setCompartirUbicacionPorWhatsApp(e.target.checked)}
+                            className="w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500 cursor-pointer"
+                          />
+                          <label
+                            htmlFor="chk-compartir-wa"
+                            className="text-xs text-slate-800 font-semibold cursor-pointer select-none"
+                          >
+                            Compartiré mi ubicación o dirección por WhatsApp
+                          </label>
+                        </div>
+
+                        {!compartirUbicacionPorWhatsApp ? (
+                          <>
+                            <input
+                              type="text"
+                              value={direccionEntrega}
+                              onChange={(e) => setDireccionEntrega(e.target.value)}
+                              placeholder="Calle, número, urbanización / barrio"
+                              className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                            />
+                            <input
+                              type="text"
+                              value={referenciaEntrega}
+                              onChange={(e) => setReferenciaEntrega(e.target.value)}
+                              placeholder="Referencia (cerca a parque, tienda, etc.)"
+                              className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                            />
+                          </>
+                        ) : null}
+
+                        <div className="p-2.5 bg-blue-50/80 border border-blue-200/70 rounded-xl text-[11px] text-blue-950 leading-relaxed">
                           {deliveryGratisDesbloqueado ? (
-                            <span className="text-emerald-700 font-bold">
-                              ¡Envío GRATIS aplicado por llevar 3 o más prendas!
+                            <span className="text-emerald-700 font-bold block">
+                              ✓ ¡Delivery GRATIS aplicado por llevar 3 o más prendas!
                             </span>
                           ) : (
-                            <span>
-                              Costo estimado: S/ 4.00. ¡Lleva {3 - totalPrendas} prendas más para delivery gratis!
-                            </span>
+                            <div className="space-y-0.5">
+                              <span className="font-bold block text-slate-900">
+                                Delivery: Por confirmar
+                              </span>
+                              <span className="text-slate-600 block">
+                                El costo de envío se coordinará y confirmará por WhatsApp según tu dirección o ubicación. ¡Lleva {3 - totalPrendas} prenda(s) más para Delivery GRATIS!
+                              </span>
+                            </div>
                           )}
-                        </p>
+                        </div>
                       </div>
                     )}
 
@@ -528,17 +557,31 @@ export default function SharedModals() {
                     </div>
                   )}
 
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     <span>Costo de envío:</span>
-                    <span className="font-bold text-slate-900">
-                      {costoEnvioAplicado === 0 ? 'S/ 0.00 (Gratis)' : `S/ ${costoEnvioAplicado.toFixed(2)}`}
+                    <span className="font-bold">
+                      {deliveryGratisDesbloqueado ? (
+                        <span className="text-emerald-700 font-bold">¡Gratis! (Promo 3+ prendas)</span>
+                      ) : modalidadEntrega === 'domicilio' ? (
+                        <span className="text-amber-700 font-bold">Por confirmar</span>
+                      ) : modalidadEntrega === 'punto_centrico' ? (
+                        <span className="text-emerald-700 font-bold">S/ 0.00 (Gratis)</span>
+                      ) : (
+                        <span className="text-slate-600 font-medium">Pago en destino</span>
+                      )}
                     </span>
                   </div>
 
                   <div className="pt-2 border-t border-slate-200 flex justify-between text-base font-black text-slate-900">
-                    <span>TOTAL A PAGAR:</span>
-                    <span className="text-emerald-700">S/ {totalGeneral.toFixed(2)}</span>
+                    <span>{modalidadEntrega === 'domicilio' && !deliveryGratisDesbloqueado ? 'SUBTOTAL A PAGAR:' : 'TOTAL A PAGAR:'}</span>
+                    <span className="text-emerald-700">S/ {subtotalPrendas.toFixed(2)}</span>
                   </div>
+
+                  {modalidadEntrega === 'domicilio' && !deliveryGratisDesbloqueado && (
+                    <p className="text-[11px] text-slate-500 text-right leading-tight">
+                      * El importe final incluirá el envío confirmado por WhatsApp según tu dirección.
+                    </p>
+                  )}
                 </div>
 
                 <button
