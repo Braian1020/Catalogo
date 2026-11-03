@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import PromotionsInteractiveBanner from '../components/PromotionsInteractiveBanner';
 import {
   SHORTS_POLIESTER,
   SHORTS_WIN,
@@ -15,7 +16,7 @@ import {
   getProductSlug,
 } from '../data/productos';
 import { Producto, Talla, TALLAS_DISPONIBLES, GUIA_TALLAS } from '../types';
-import { useCart, PUNTOS_CENTRICOS_CHICLAYO } from '../context/CartContext';
+import { useCart } from '../context/CartContext';
 import { POLESTORE_PHONE_DISPLAY } from '../utils/whatsapp';
 import {
   ShoppingBag,
@@ -387,108 +388,19 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
           </div>
         </div>
 
-        {/* 2 TARJETAS DESTACADAS: Clásicos Polistrech & Deportivos Win */}
-        {categoriaActiva === 'todos' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-            <div
-              onClick={() => cambiarCategoria('clasicos')}
-              className="group p-5 rounded-2xl bg-white border border-slate-200 hover:border-slate-900 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
-            >
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="px-2.5 py-0.5 rounded-md bg-slate-900 text-white text-[10px] font-black uppercase tracking-wider">
-                    36 Combinaciones
-                  </span>
-                  <span className="text-xs font-bold text-slate-500">Tela Polistrech</span>
-                </div>
-                <h3 className="font-black text-lg text-slate-950 group-hover:text-blue-900 transition-colors">
-                  Shorts Clásicos Polistrech
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  12 colores principales con 36 variantes de rayas. Tela elástica, fresca, suave y bolsillos reforzados con cierre.
-                </p>
-              </div>
-              <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-900">
-                <span>Ver solo Clásicos</span>
-                <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
-              </div>
-            </div>
+        {/* BANNER DE PROMOCIONES VISIBLES, ENTENDIBLES, LLAMATIVAS Y ENTRETENIDAS */}
+        <PromotionsInteractiveBanner tipo={categoriaActiva} className="mb-6" />
 
-            <div
-              onClick={() => cambiarCategoria('deportivos')}
-              className="group p-5 rounded-2xl bg-white border border-slate-200 hover:border-blue-900 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
-            >
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="px-2.5 py-0.5 rounded-md bg-blue-600 text-white text-[10px] font-black uppercase tracking-wider">
-                    11 Modelos de Clubes
-                  </span>
-                  <span className="text-xs font-bold text-slate-500">Tela Win Deportiva</span>
-                </div>
-                <h3 className="font-black text-lg text-slate-950 group-hover:text-blue-900 transition-colors">
-                  Shorts Deportivos Tela Win
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Ediciones de Real Madrid, Barcelona, Selección Argentina, Bayern y más. Microperforada, ultra ligera y transpirable.
-                </p>
-              </div>
-              <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-900">
-                <span>Ver solo Deportivos</span>
-                <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Barra de Búsqueda y Filtros de Categoría */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
-          <div className="flex items-center gap-1.5 p-1 bg-slate-200/80 rounded-2xl w-full sm:w-auto overflow-x-auto">
-            <button
-              type="button"
-              onClick={() => cambiarCategoria('todos')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-                categoriaActiva === 'todos'
-                  ? 'bg-white text-slate-950 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Todos ({SHORTS_POLIESTER.length + SHORTS_WIN.length})
-            </button>
-
-            <button
-              type="button"
-              onClick={() => cambiarCategoria('clasicos')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-                categoriaActiva === 'clasicos'
-                  ? 'bg-white text-slate-950 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Shorts Clásicos Polistrech ({SHORTS_POLIESTER.length})
-            </button>
-
-            <button
-              type="button"
-              onClick={() => cambiarCategoria('deportivos')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-                categoriaActiva === 'deportivos'
-                  ? 'bg-white text-slate-950 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Shorts Deportivos ({SHORTS_WIN.length})
-            </button>
-          </div>
-
-          {/* Input de Búsqueda */}
-          <div className="relative w-full sm:w-72">
+        {/* Barra de Búsqueda */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8">
+          <div className="relative w-full sm:w-80">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
               placeholder="Buscar por color, equipo o rayas..."
-              className="w-full pl-9 pr-8 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 shadow-2xs"
+              className="w-full pl-9 pr-8 py-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 shadow-2xs"
             />
             {busqueda && (
               <button
@@ -500,18 +412,9 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
               </button>
             )}
           </div>
-        </div>
-
-        {/* Modal de telas link */}
-        <div className="mb-6 flex justify-end">
-          <button
-            type="button"
-            onClick={() => setModalTelasAbierto(true)}
-            className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 cursor-pointer"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-blue-500" />
-            <span>Saber más sobre la tela Polistrech vs Win</span>
-          </button>
+          <span className="text-xs font-bold text-slate-500">
+            Mostrando {totalResultados} {totalResultados === 1 ? 'modelo' : 'modelos'}
+          </span>
         </div>
 
         {/* Sin resultados */}
@@ -538,14 +441,19 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
         {/* 4.1 SHORTS CLÁSICOS */}
         {coloresClasicosFiltrados.length > 0 && (
           <div className="mb-12">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
               <div>
                 <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
-                  Shorts Clásicos Polistrech
+                  Shorts Clásicos
                 </h2>
                 <p className="text-xs text-slate-500">
-                  Selecciona el color de rayas o haz clic en la foto para ver la ficha completa y compartir.
+                  Tela Polistrech elástica, suave y fresca con bolsillos con cierre reforzado.
                 </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 rounded-lg bg-emerald-50 text-emerald-800 text-xs font-black border border-emerald-200 shadow-xs">
+                  1x S/ 15 · 6x S/ 81 · 12x S/ 144
+                </span>
               </div>
             </div>
 
@@ -576,61 +484,52 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
                     style={{ animationDelay: `${Math.min(idx * 35, 350)}ms` }}
                     className="animate-card-stagger bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col group"
                   >
-                    {/* FOTO GRANDE Y NÍTIDA CON ENLACE DIRECTO */}
-                    <div className="relative aspect-4/3 sm:aspect-square bg-slate-100 overflow-hidden">
+                    {/* FOTO CON MARGEN Y SIN RECORTAR */}
+                    <div className="relative aspect-square bg-slate-50 overflow-hidden flex items-center justify-center p-4">
                       <Link
                         to={`/producto/${slugProducto}`}
-                        title={`Ver página individual de ${productoActivo.nombre}`}
-                        className="block w-full h-full cursor-pointer"
+                        title={`Ver ficha de ${productoActivo.nombre}`}
+                        className="w-full h-full flex items-center justify-center cursor-pointer"
                       >
                         <img
                           src={productoActivo.imagen}
-                          alt={`Short ${colorShort} con rayas ${estado.colorRayas}`}
+                          alt={productoActivo.nombre}
                           loading="lazy"
-                          className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-300"
+                          className="max-w-full max-h-full w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-105"
                         />
                       </Link>
 
-                      {/* Badge de color */}
-                      <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 bg-white/95 backdrop-blur-md rounded-lg shadow-xs text-xs font-black text-slate-900 pointer-events-none">
-                        <span
-                          className="w-3.5 h-3.5 rounded-full inline-block border border-black/10 shrink-0"
-                          style={{ backgroundColor: hexInfo.bg }}
-                        />
-                        <span>{colorShort}</span>
-                      </div>
-
-                      {/* Botón Zoom */}
                       <button
                         type="button"
                         onClick={() => setModalFoto(productoActivo)}
-                        className="absolute top-3 right-3 p-2 bg-white/95 backdrop-blur-md hover:bg-white text-slate-700 hover:text-black rounded-lg shadow-xs cursor-pointer transition-colors"
-                        aria-label={`Ver foto ampliada de short ${colorShort}`}
+                        className="absolute top-2.5 right-2.5 p-1.5 bg-white/90 hover:bg-white text-slate-600 rounded-lg shadow-xs cursor-pointer transition-colors"
                         title="Ampliar foto"
+                        aria-label="Ampliar foto"
                       >
-                        <ZoomIn className="w-4 h-4" />
+                        <ZoomIn className="w-3.5 h-3.5" />
                       </button>
-
-                      <div className="absolute bottom-3 left-3 px-2 py-0.5 bg-slate-900/80 backdrop-blur-sm text-white rounded text-[10px] font-bold">
-                        Rayas: {estado.colorRayas}
-                      </div>
-
-                      <Link
-                        to={`/producto/${slugProducto}`}
-                        className="absolute bottom-3 right-3 px-2.5 py-1 bg-blue-600/90 hover:bg-blue-600 backdrop-blur-sm text-white rounded-lg text-[10px] font-black flex items-center gap-1 transition-colors shadow-xs"
-                      >
-                        <span>Ficha</span>
-                        <ExternalLink className="w-3 h-3" />
-                      </Link>
                     </div>
 
-                    {/* CONTROLES INTERACTIVOS DIRECTOS */}
+                    {/* CONTROLES DIRECTOS Y LIMPIOS */}
                     <div className="p-4 flex-1 flex flex-col justify-between gap-3">
                       <div>
-                        {/* Selector de color de rayas */}
+                        {/* Título y Precio */}
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <Link
+                            to={`/producto/${slugProducto}`}
+                            className="font-bold text-sm text-slate-900 hover:text-blue-900 transition-colors"
+                          >
+                            Short {colorShort}
+                          </Link>
+                          <span className="text-sm font-black text-slate-950">
+                            S/ 15.00
+                          </span>
+                        </div>
+
+                        {/* Selector de color de rayas directo */}
                         <div className="mb-3">
                           <div className="flex items-center justify-between text-xs mb-1.5">
-                            <span className="font-bold text-slate-700">Color de Rayas:</span>
+                            <span className="font-semibold text-slate-700">Rayas:</span>
                             <span className="text-[11px] font-bold text-slate-900">
                               {estado.colorRayas}
                             </span>
@@ -638,24 +537,19 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
                           <div className="flex flex-wrap gap-1.5">
                             {rayasDisponibles.map((raya) => {
                               const esSeleccionada = estado.colorRayas.toLowerCase() === raya.toLowerCase();
-                              const rayaHex = COLOR_HEX_MAP[raya] || { bg: '#64748b', text: '#ffffff' };
 
                               return (
                                 <button
                                   key={raya}
                                   type="button"
                                   onClick={() => handleCambiarRayaClasico(colorShort, raya)}
-                                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                                     esSeleccionada
-                                      ? 'bg-slate-900 text-white shadow-xs'
+                                      ? 'bg-slate-950 text-white shadow-xs'
                                       : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
                                   }`}
                                 >
-                                  <span
-                                    className="w-2.5 h-2.5 rounded-full border border-black/20 shrink-0"
-                                    style={{ backgroundColor: rayaHex.bg }}
-                                  />
-                                  <span>{raya}</span>
+                                  {raya}
                                 </button>
                               );
                             })}
@@ -753,14 +647,19 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
         {/* 4.2 SHORTS DEPORTIVOS (WIN) */}
         {gruposWinFiltrados.length > 0 && (
           <div className="mb-12">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
               <div>
                 <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
-                  Shorts Deportivos (Tela Win de Clubes y Selecciones)
+                  Shorts Deportivos
                 </h2>
                 <p className="text-xs text-slate-500">
-                  Tejido deportivo transpirable. Selecciona versión (V1/V2) o abre la página individual del modelo.
+                  Tela Win deportiva microperforada, ligera, transpirable y de secado rápido.
                 </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 rounded-lg bg-blue-50 text-blue-800 text-xs font-black border border-blue-200 shadow-xs">
+                  1x S/ 25 · 3x S/ 69 · 12x S/ 240
+                </span>
               </div>
             </div>
 
@@ -785,51 +684,49 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
                     style={{ animationDelay: `${delay}ms` }}
                     className="animate-card-stagger bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col group"
                   >
-                    {/* FOTO GRANDE Y NÍTIDA */}
-                    <div className="relative aspect-4/3 sm:aspect-square bg-slate-100 overflow-hidden">
+                    {/* FOTO CON MARGEN Y SIN RECORTAR */}
+                    <div className="relative aspect-square bg-slate-50 overflow-hidden flex items-center justify-center p-4">
                       <Link
                         to={`/producto/${slugProducto}`}
-                        title={`Ver página individual de ${productoActivo.nombre}`}
-                        className="block w-full h-full cursor-pointer"
+                        title={`Ver ficha de ${productoActivo.nombre}`}
+                        className="w-full h-full flex items-center justify-center cursor-pointer"
                       >
                         <img
                           src={productoActivo.imagen}
                           alt={productoActivo.nombre}
                           loading="lazy"
-                          className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-300"
+                          className="max-w-full max-h-full w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-105"
                         />
                       </Link>
-
-                      <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 bg-white/95 backdrop-blur-md rounded-lg shadow-xs text-xs font-black text-slate-900 pointer-events-none">
-                        <span>{grupo.equipo}</span>
-                      </div>
 
                       <button
                         type="button"
                         onClick={() => setModalFoto(productoActivo)}
-                        className="absolute top-3 right-3 p-2 bg-white/95 backdrop-blur-md hover:bg-white text-slate-700 hover:text-black rounded-lg shadow-xs cursor-pointer transition-colors"
-                        aria-label={`Ver foto ampliada de ${productoActivo.nombre}`}
+                        className="absolute top-2.5 right-2.5 p-1.5 bg-white/90 hover:bg-white text-slate-600 rounded-lg shadow-xs cursor-pointer transition-colors"
                         title="Ampliar foto"
+                        aria-label="Ampliar foto"
                       >
-                        <ZoomIn className="w-4 h-4" />
+                        <ZoomIn className="w-3.5 h-3.5" />
                       </button>
-
-                      <Link
-                        to={`/producto/${slugProducto}`}
-                        className="absolute bottom-3 right-3 px-2.5 py-1 bg-amber-500/90 hover:bg-amber-500 backdrop-blur-sm text-slate-950 rounded-lg text-[10px] font-black flex items-center gap-1 transition-colors shadow-xs"
-                      >
-                        <span>Ficha</span>
-                        <ExternalLink className="w-3 h-3" />
-                      </Link>
                     </div>
 
-                    {/* CONTROLES */}
+                    {/* CONTROLES DIRECTOS */}
                     <div className="p-4 flex-1 flex flex-col justify-between gap-3">
                       <div>
-                        {/* Título y versión */}
-                        <div className="mb-2">
-                          <h3 className="font-black text-sm text-slate-900">{productoActivo.nombre}</h3>
-                          <p className="text-[11px] text-slate-500">{versionActiva.subtitulo}</p>
+                        {/* Título y Precio */}
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <div>
+                            <Link
+                              to={`/producto/${slugProducto}`}
+                              className="font-bold text-sm text-slate-900 hover:text-blue-900 transition-colors block"
+                            >
+                              {productoActivo.nombre}
+                            </Link>
+                            <span className="text-[11px] text-slate-500">{versionActiva.subtitulo}</span>
+                          </div>
+                          <span className="text-sm font-black text-slate-950 shrink-0">
+                            S/ 25.00
+                          </span>
                         </div>
 
                         {/* Botones de versiones V1 / V2 si aplica */}
@@ -936,101 +833,6 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
             </div>
           </div>
         )}
-
-        {/* ======================================================== */}
-        {/* SECCIÓN 2: GUÍA DE TALLAS                                */}
-        {/* ======================================================== */}
-        <section id="guia-tallas" aria-label="Guía de tallas" className="mb-12 scroll-mt-20">
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xs">
-            <div className="max-w-2xl mx-auto space-y-5">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-xs">
-                  <Ruler className="w-5 h-5 text-emerald-400" />
-                </div>
-                <div>
-                  <h2 className="text-lg sm:text-xl font-black text-slate-900">
-                    Guía de Tallas Oficial Pool Store
-                  </h2>
-                  <p className="text-xs text-slate-500">
-                    Referencia exacta de medidas para elegir tu talla con total seguridad.
-                  </p>
-                </div>
-              </div>
-
-              <div className="border border-slate-200 rounded-2xl overflow-hidden divide-y divide-slate-100 bg-slate-50 text-xs">
-                {Object.entries(GUIA_TALLAS).map(([t, info]) => (
-                  <div key={t} className="flex justify-between items-center p-3.5 hover:bg-slate-100/60 transition-colors">
-                    <div className="flex items-center gap-2.5">
-                      <span className="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-black text-xs">
-                        {t}
-                      </span>
-                      <span className="font-black text-slate-900 text-sm">{info.tallaNumero}</span>
-                    </div>
-                    <span className="text-slate-600 font-medium">
-                      Cintura con elástico: <strong>{info.cintura} cm</strong>
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 space-y-1">
-                  <strong className="text-slate-900 block font-bold">Shorts Clásicos (Polistrech)</strong>
-                  <p className="text-slate-500 text-[11px] leading-relaxed">
-                    Tela elástica suave con pretina reforzada y cordón regulable. Tallas desde XS hasta XL.
-                  </p>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-emerald-50/60 border border-emerald-100 space-y-1">
-                  <strong className="text-emerald-900 block font-bold">Shorts Deportivos (Win)</strong>
-                  <p className="text-emerald-700 text-[11px] leading-relaxed">
-                    Talla estándar, tejido de alto rendimiento y secado rápido.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ======================================================== */}
-        {/* SECCIÓN 3: PUNTOS DE ENTREGA EN CHICLAYO                 */}
-        {/* ======================================================== */}
-        <section id="lugares-entrega" aria-label="Lugares de entrega" className="mb-12 scroll-mt-20">
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xs">
-            <div className="max-w-3xl mx-auto space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-xs">
-                  <Truck className="w-5 h-5 text-blue-400" />
-                </div>
-                <div>
-                  <h2 className="text-lg sm:text-xl font-black text-slate-900">
-                    Lugares de Entrega en Chiclayo
-                  </h2>
-                  <p className="text-xs text-slate-500">
-                    Puntos céntricos de encuentro sin costo adicional y entrega rápida en Zonas cercanas.
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {PUNTOS_CENTRICOS_CHICLAYO.map((pto) => (
-                  <div
-                    key={pto.id}
-                    className="p-4 rounded-2xl border border-slate-200 bg-slate-50/60 flex items-start gap-3 hover:border-slate-300 transition-colors"
-                  >
-                    <span className="text-2xl shrink-0">{pto.icono}</span>
-                    <div>
-                      <h3 className="font-black text-sm text-slate-900">{pto.nombre}</h3>
-                      <p className="text-xs text-slate-500 mt-0.5">{pto.detalle}</p>
-                      <span className="inline-block mt-2 text-[10px] font-black text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-md">
-                        Entrega S/ 0.00 Gratis
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
 
       </main>
 

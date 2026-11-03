@@ -66,7 +66,7 @@ export default function HomePage() {
                 </p>
               </div>
 
-              {/* Botón de acción directo al catálogo */}
+              {/* Botón de acción directo a Productos */}
               <div className="pt-2 sm:pt-4">
                 <Link
                   to="/productos"

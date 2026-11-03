@@ -149,10 +149,21 @@ export default function ProductDetailPage() {
     );
   }
 
-  // Cálculos de precio para este producto individual
+  // Cálculos de precio para este producto individual: Clásicos a S/ 15 y Deportivos a S/ 25
   const isWin = productoActivo.tipoTela === 'win';
-  const precioUnitario = cantidad >= 12 ? 20.0 : cantidad >= 3 ? 23.0 : 25.0;
-  const precioRegularTotal = 25.0 * cantidad;
+  const precioBase = isWin ? 25.0 : 15.0;
+  const precioUnitario = isWin
+    ? cantidad >= 12
+      ? 20.0
+      : cantidad >= 3
+      ? 23.0
+      : 25.0
+    : cantidad >= 12
+    ? 12.0
+    : cantidad >= 6
+    ? 13.5
+    : 15.0;
+  const precioRegularTotal = precioBase * cantidad;
   const subtotalItem = precioUnitario * cantidad;
   const ahorroItem = Math.max(0, precioRegularTotal - subtotalItem);
 
@@ -264,11 +275,11 @@ export default function ProductDetailPage() {
             {/* COLUMNA IZQUIERDA: FOTO GRANDE Y GALERÍA */}
             <div className="lg:col-span-6 flex flex-col gap-4">
               {/* Imagen Principal */}
-              <div className="relative aspect-square sm:aspect-4/3 lg:aspect-square bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 group">
+              <div className="relative aspect-square sm:aspect-4/3 lg:aspect-square bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 group flex items-center justify-center p-4 sm:p-6">
                 <img
                   src={productoActivo.imagen}
                   alt={productoActivo.nombre}
-                  className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-300"
+                  className="max-w-full max-h-full w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-102"
                 />
 
                 {/* Badge de Tela */}
@@ -386,19 +397,11 @@ export default function ProductDetailPage() {
             {/* COLUMNA DERECHA: INFORMACIÓN, SELECTORES Y ACCIONES */}
             <div className="lg:col-span-6 flex flex-col justify-between">
               <div>
-                {/* Categoría y botón de tela */}
+                {/* Categoría */}
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <span className="text-xs font-black text-slate-500 uppercase tracking-wider">
-                    {isWin ? 'Colección Equipos Deportivos' : 'Colección Clásicos Diarios'}
+                    {isWin ? 'Shorts Deportivos' : 'Shorts Clásicos'}
                   </span>
-                  <button
-                    type="button"
-                    onClick={() => setModalTelasAbierto(true)}
-                    className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 cursor-pointer"
-                  >
-                    <Info className="w-3.5 h-3.5" />
-                    <span>Saber más sobre la tela</span>
-                  </button>
                 </div>
 
                 {/* Título */}
@@ -409,8 +412,8 @@ export default function ProductDetailPage() {
                 {/* Resumen de características */}
                 <p className="text-xs sm:text-sm text-slate-600 mb-5 leading-relaxed">
                   {isWin
-                    ? 'Short deportivo de alto rendimiento confeccionado en tela Win microperforada. Máxima frescura, escudo del club y bolsillos con cierre para mayor seguridad.'
-                    : `Short clásico confeccionado en tela Polistrech suave y de secado rápido en color ${productoActivo.colorShort} con franjas laterales color ${productoActivo.colorRayas}. Incluye bolsillos con cierre y cordón ajustable.`}
+                    ? 'Confeccionado en tela Win deportiva microperforada, ligera, transpirable y de secado rápido. Incluye bolsillos laterales con cierre reforzado.'
+                    : 'Confeccionado en tela Polistrech elástica, suave y fresca al tacto. Incluye bolsillos laterales con cierre reforzado y pretina ajustable.'}
                 </p>
 
                 {/* CAJA DE PRECIOS Y PROMOCIONES */}
@@ -427,30 +430,38 @@ export default function ProductDetailPage() {
                     )}
                   </div>
 
-                  {/* Escala de promociones */}
+                  {/* Escala de precios y promociones */}
                   <div className="grid grid-cols-3 gap-2 text-center">
                     <div
                       className={`p-2 rounded-xl border transition-all ${
-                        cantidad < 3
+                        (isWin ? cantidad < 3 : cantidad < 6)
                           ? 'bg-white border-blue-500 shadow-xs'
                           : 'bg-white/60 border-slate-200'
                       }`}
                     >
                       <span className="block text-[10px] text-slate-500 font-bold uppercase">1 Unidad</span>
-                      <strong className="text-xs font-black text-slate-900">S/ 25.00</strong>
+                      <strong className="text-xs font-black text-slate-900">
+                        S/ {isWin ? '25.00' : '15.00'}
+                      </strong>
                       <span className="block text-[9px] text-slate-400">c/u</span>
                     </div>
 
                     <div
                       className={`p-2 rounded-xl border transition-all ${
-                        cantidad >= 3 && cantidad < 12
+                        (isWin ? cantidad >= 3 && cantidad < 12 : cantidad >= 6 && cantidad < 12)
                           ? 'bg-emerald-50 border-emerald-500 shadow-xs'
                           : 'bg-white/60 border-slate-200'
                       }`}
                     >
-                      <span className="block text-[10px] text-emerald-700 font-bold uppercase">3 Unidades</span>
-                      <strong className="text-xs font-black text-emerald-800">S/ 69.00</strong>
-                      <span className="block text-[9px] text-emerald-600">S/ 23 c/u</span>
+                      <span className="block text-[10px] text-emerald-700 font-bold uppercase">
+                        {isWin ? '3 Unidades' : '6 Unidades'}
+                      </span>
+                      <strong className="text-xs font-black text-emerald-800">
+                        S/ {isWin ? '69.00' : '81.00'}
+                      </strong>
+                      <span className="block text-[9px] text-emerald-600">
+                        {isWin ? 'S/ 23 c/u' : 'S/ 13.50 c/u'}
+                      </span>
                     </div>
 
                     <div
@@ -461,8 +472,12 @@ export default function ProductDetailPage() {
                       }`}
                     >
                       <span className="block text-[10px] text-amber-700 font-bold uppercase">Docena (12)</span>
-                      <strong className="text-xs font-black text-amber-900">S/ 240.00</strong>
-                      <span className="block text-[9px] text-amber-700">S/ 20 c/u</span>
+                      <strong className="text-xs font-black text-amber-900">
+                        S/ {isWin ? '240.00' : '144.00'}
+                      </strong>
+                      <span className="block text-[9px] text-amber-700">
+                        {isWin ? 'S/ 20 c/u' : 'S/ 12 c/u'}
+                      </span>
                     </div>
                   </div>
                 </div>

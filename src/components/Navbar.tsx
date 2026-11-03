@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { getWhatsAppUrl } from '../utils/whatsapp';
+import TopAnnouncementBar from './TopAnnouncementBar';
 import {
   ShoppingBag,
   Menu,
   X,
-  Sparkles,
   Truck,
-  Compass,
+  Shirt,
   Home,
   Headphones,
   ChevronRight,
@@ -43,6 +43,7 @@ export default function Navbar({ hideBanner = false }: NavbarProps) {
 
   const isActive = (path: string) => {
     if (path === '/') return location.pathname === '/';
+    if (path === '/productos') return location.pathname.startsWith('/productos') || location.pathname.startsWith('/ropa');
     return location.pathname.startsWith(path);
   };
 
@@ -56,8 +57,8 @@ export default function Navbar({ hideBanner = false }: NavbarProps) {
     {
       label: 'Productos',
       path: '/productos',
-      icon: Compass,
-      sublabel: 'Catálogo general, ropa y colecciones',
+      icon: ShoppingBag,
+      sublabel: 'Catálogo de productos y ropa',
     },
     {
       label: 'Entregas',
@@ -74,22 +75,21 @@ export default function Navbar({ hideBanner = false }: NavbarProps) {
 
   return (
     <>
-      {/* 1. TOP MARQUEE BANNER */}
+      {/* 1. COMPONENTE DE BANNER SUPERIOR ANIMADO FIJO */}
       {!hideBanner && (
-        <div className="bg-slate-950 text-white text-[11px] sm:text-xs py-2 px-3 border-b border-slate-800 text-center font-bold tracking-tight">
-          <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
-            <span className="flex items-center gap-1.5 text-amber-400 mx-auto">
-              <Sparkles className="w-3.5 h-3.5 shrink-0 text-amber-300" />
-              <span>
-                🔥 Promociones: <strong>1x S/ 25</strong> · <strong>3x S/ 69</strong> · <strong>12x S/ 240</strong> | Entregas coordinadas en Chiclayo y todo el Perú
-              </span>
-            </span>
-          </div>
-        </div>
+        <>
+          <TopAnnouncementBar isFixed />
+          {/* Espaciador para evitar saltos o solapamientos con el contenido */}
+          <div className="h-8 sm:h-9 w-full shrink-0" aria-hidden="true" />
+        </>
       )}
 
-      {/* 2. MAIN HEADER NAVBAR */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs transition-colors">
+      {/* 2. ENCABEZADO PRINCIPAL (STICKY JUSTO DEBAJO DEL BANNER FIJO) */}
+      <header
+        className={`sticky ${
+          hideBanner ? 'top-0' : 'top-8 sm:top-9'
+        } z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs transition-colors`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           
           {/* Logo Brand */}
@@ -184,10 +184,16 @@ export default function Navbar({ hideBanner = false }: NavbarProps) {
 
         {/* 3. MOBILE FULL-SCREEN RESPONSIVE OVERLAY & MENU */}
         {mobileMenuOpen && (
-          <div className="md:hidden fixed inset-0 top-16 z-50 flex flex-col">
+          <div
+            className={`md:hidden fixed inset-0 ${
+              hideBanner ? 'top-16' : 'top-24 sm:top-[100px]'
+            } z-50 flex flex-col`}
+          >
             {/* Backdrop con desenfoque suave para cerrar al hacer clic fuera */}
             <div
-              className="fixed inset-0 top-16 bg-slate-950/40 backdrop-blur-xs transition-opacity duration-300"
+              className={`fixed inset-0 ${
+                hideBanner ? 'top-16' : 'top-24 sm:top-[100px]'
+              } bg-slate-950/40 backdrop-blur-xs transition-opacity duration-300`}
               onClick={() => setMobileMenuOpen(false)}
               aria-hidden="true"
             />
