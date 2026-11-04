@@ -13,6 +13,7 @@ import {
   Headphones,
   ChevronRight,
   ArrowRight,
+  Tv,
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -43,7 +44,7 @@ export default function Navbar({ hideBanner = false }: NavbarProps) {
 
   const isActive = (path: string) => {
     if (path === '/') return location.pathname === '/';
-    if (path === '/productos') return location.pathname.startsWith('/productos') || location.pathname.startsWith('/ropa');
+    if (path === '/productos') return location.pathname === '/productos' || location.pathname.startsWith('/ropa') || location.pathname.startsWith('/tecnologia');
     return location.pathname.startsWith(path);
   };
 
@@ -58,7 +59,7 @@ export default function Navbar({ hideBanner = false }: NavbarProps) {
       label: 'Productos',
       path: '/productos',
       icon: ShoppingBag,
-      sublabel: 'Catálogo de productos y ropa',
+      sublabel: 'Catálogo de ropa y tecnología',
     },
     {
       label: 'Entregas',

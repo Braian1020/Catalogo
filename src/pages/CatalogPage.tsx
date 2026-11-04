@@ -344,7 +344,7 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 mt-1">
               {categoriaActiva === 'clasicos'
-                ? '12 colores y 36 combinaciones de rayas con bolsillos con cierre. Tela elástica y fresca.'
+                ? '12 colores y 36 combinaciones de rayas con pretina adaptable. Tela elástica y fresca.'
                 : categoriaActiva === 'deportivos'
                 ? '11 diseños oficiales y alternativos en tela Win microperforada de alta transpirabilidad.'
                 : '47 modelos disponibles para deporte, entrenamiento y uso casual con entregas en Chiclayo y Perú.'}
@@ -448,7 +448,7 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
                   Shorts Clásicos
                 </h2>
                 <p className="text-xs text-slate-500">
-                  Tela Polistrech elástica, suave y fresca con bolsillos con cierre reforzado.
+                  Tela Polistrech elástica, suave y fresca con pretina adaptable y costuras reforzadas.
                 </p>
               </div>
               <div className="flex items-center gap-2">

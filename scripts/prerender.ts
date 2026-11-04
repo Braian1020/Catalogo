@@ -89,7 +89,7 @@ async function runPrerender() {
       relativeDir: 'ropa/shorts',
       title: 'Shorts Deportivos y Clásicos (47 modelos) | POOL STORE',
       description:
-        'Catálogo de 47 shorts con bolsillos reforzados con cierre, tela Polistrech y tela Win deportiva transpirable. Promociones: 1x S/ 25, 3x S/ 69, 12x S/ 240.',
+        'Catálogo de 47 shorts en tela Polistrech suave y tela Win deportiva transpirable. Precios: Clásicos S/ 15, Deportivos S/ 25. Promociones especiales y envíos a todo el Perú.',
       url: '/ropa/shorts',
       image: defaultImage,
     },
@@ -173,7 +173,7 @@ async function runPrerender() {
         : 'Tela Polistrech elástica, fresca y ligera';
 
     const pageTitle = `${p.nombre} | Pool Store`;
-    const pageDesc = `${p.nombre} de Pool Store. ${telaDesc}. Bolsillos con cierre y pretina ajustable. Promoción: 1 por S/ 25, 3 por S/ 69, 12 por S/ 240. Envíos a todo el Perú.`;
+    const pageDesc = `${p.nombre} de Pool Store. ${telaDesc}. Pretina ajustable y máxima comodidad. Envíos coordinados a Chiclayo y a todo el Perú.`;
     const imageUrl = p.imagen.startsWith('http') ? p.imagen : `${p.imagen}`;
 
     const schemaJson = {

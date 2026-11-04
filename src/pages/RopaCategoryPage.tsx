@@ -18,7 +18,7 @@ export default function RopaCategoryPage() {
   useEffect(() => {
     document.title = 'Ropa | POOL STORE Chiclayo';
     const description =
-      'Shorts Clásicos Polistrech y Shorts Deportivos Win en POOL STORE. Prendas con bolsillos laterales con cierre reforzado de seguridad.';
+      'Shorts Clásicos Polistrech y Shorts Deportivos Win en POOL STORE. Prendas frescas, elásticas y resistentes para deporte y descanso.';
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute('content', description);
 
@@ -55,7 +55,7 @@ export default function RopaCategoryPage() {
               Ropa
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 mt-1">
-              Shorts Clásicos y Shorts Deportivos con bolsillos con cierre reforzado
+              Shorts Clásicos y Shorts Deportivos de alta comodidad
             </p>
           </div>
 
@@ -67,6 +67,20 @@ export default function RopaCategoryPage() {
             <Ruler className="w-4 h-4 text-amber-400" />
             <span>Guía de tallas</span>
           </button>
+        </div>
+
+        {/* Banner accesible de la categoría Ropa */}
+        <div className="w-full max-w-4xl mx-auto aspect-[3/1] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-slate-200/90 bg-slate-950">
+          <img
+            src="/assets/categorias/Ropa.png"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src =
+                'https://lh3.googleusercontent.com/d/1FV1EUPfaRLkSY4WAhwslj3H5hJyxzh2_';
+            }}
+            alt="Categoría Ropa POOL STORE - Shorts Clásicos y Deportivos"
+            className="w-full h-full object-cover block"
+            loading="eager"
+          />
         </div>
 
         {/* Tarjetas directas de los shorts */}
@@ -98,7 +112,7 @@ export default function RopaCategoryPage() {
                     Shorts Clásicos
                   </h2>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Confeccionados en <strong>tela Polistrech</strong> (suave, fresca y elástica). Cuentan con bolsillos laterales con cierre reforzado de seguridad y pretina adaptable.
+                    Confeccionados en <strong>tela Polistrech</strong> (suave, fresca y elástica). Cuentan con pretina adaptable y costuras reforzadas.
                   </p>
 
                   <ul className="text-xs text-slate-700 space-y-1.5 pt-1">
@@ -108,7 +122,7 @@ export default function RopaCategoryPage() {
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>2 bolsillos laterales con cierre reforzado</span>
+                      <span>Costuras reforzadas de alta durabilidad</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -171,7 +185,7 @@ export default function RopaCategoryPage() {
                     Shorts Deportivos
                   </h2>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Confeccionados en <strong>tela Win deportiva</strong> (microperforada, ligera y de secado rápido). Modelos de clubes y selecciones con bolsillos laterales con cierre.
+                    Confeccionados en <strong>tela Win deportiva</strong> (microperforada, ligera y de secado rápido). Modelos de clubes y selecciones con pretina confortable.
                   </p>
 
                   <ul className="text-xs text-slate-700 space-y-1.5 pt-1">
@@ -181,7 +195,7 @@ export default function RopaCategoryPage() {
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />
-                      <span>Bolsillos laterales con cierre reforzado</span>
+                      <span>Corte deportivo ergonómico y liviano</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />

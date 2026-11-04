@@ -14,6 +14,9 @@ const CatalogPage = lazy(() => import('./pages/CatalogPage'));
 const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'));
 const EntregasPage = lazy(() => import('./pages/EntregasPage'));
 const NosotrosPage = lazy(() => import('./pages/NosotrosPage'));
+const TecnologiaHubPage = lazy(() => import('./pages/TecnologiaHubPage'));
+const TvBoxLandingPage = lazy(() => import('./pages/TvBoxLandingPage'));
+const TvBoxHelpCenterPage = lazy(() => import('./pages/TvBoxHelpCenterPage'));
 
 const PageFallback = () => (
   <div className="min-h-[50vh] flex items-center justify-center py-20">
@@ -45,11 +48,21 @@ export default function App() {
         <Route path="/ropa/shorts/:slug" element={<ProductDetailPage />} />
         <Route path="/producto/:slug" element={<ProductDetailPage />} />
 
-        {/* 6. Páginas Informativas */}
+        {/* 6. Sección Tecnología: Sistema Android - TV Box */}
+        <Route path="/tecnologia" element={<TecnologiaHubPage />} />
+        <Route path="/tecnologia/sistemas-tv-box" element={<TvBoxLandingPage />} />
+        <Route path="/tecnologia/sistemas-tv-box/ayuda" element={<TvBoxHelpCenterPage />} />
+        
+        {/* Atajos de acceso directo para TV Box */}
+        <Route path="/tv-box" element={<Navigate to="/tecnologia/sistemas-tv-box" replace />} />
+        <Route path="/tvbox" element={<Navigate to="/tecnologia/sistemas-tv-box" replace />} />
+        <Route path="/ayuda-tvbox" element={<Navigate to="/tecnologia/sistemas-tv-box/ayuda" replace />} />
+
+        {/* 7. Páginas Informativas */}
         <Route path="/entregas" element={<EntregasPage />} />
         <Route path="/nosotros" element={<NosotrosPage />} />
 
-        {/* 7. Redirecciones de Compatibilidad */}
+        {/* 8. Redirecciones de Compatibilidad */}
         <Route path="/catalogo" element={<Navigate to="/ropa/shorts" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

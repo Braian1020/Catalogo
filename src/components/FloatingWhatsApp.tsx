@@ -62,3 +62,5 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ hasCartItems
     </aside>
   );
 };
+
+export default FloatingWhatsApp;

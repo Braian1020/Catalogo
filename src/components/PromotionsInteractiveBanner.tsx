@@ -52,7 +52,7 @@ export default function PromotionsInteractiveBanner({
             <p className="text-xs sm:text-sm text-slate-200 max-w-2xl leading-relaxed">
               {isWin
                 ? 'Confeccionados en tela Win deportiva microperforada, ligera y de secado rápido. ¡Ahorra llevando varios clubes y selecciones!'
-                : 'Confeccionados en tela Polistrech suave, elástica y fresca con bolsillos reforzados con cierre. ¡Ahorra llevando por media docena o docena!'}
+                : 'Confeccionados en tela Polistrech suave, elástica y fresca con pretina adaptable. ¡Ahorra llevando por media docena o docena!'}
             </p>
           </div>
 

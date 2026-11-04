@@ -86,6 +86,18 @@ export default function Footer() {
                   <span>Shorts Deportivos Win</span>
                 </Link>
               </li>
+              <li className="pt-1.5 mt-1 border-t border-slate-900">
+                <Link to="/tecnologia/sistemas-tv-box" className="text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1.5 font-bold">
+                  <ChevronRight className="w-3 h-3 text-blue-400" />
+                  <span>Sistema Android TV Box</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/tecnologia/sistemas-tv-box/ayuda" className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1.5 font-bold">
+                  <ChevronRight className="w-3 h-3 text-cyan-400" />
+                  <span>Centro de Ayuda TV Box</span>
+                </Link>
+              </li>
             </ul>
           </div>
 

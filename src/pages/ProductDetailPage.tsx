@@ -415,8 +415,8 @@ export default function ProductDetailPage() {
                 {/* Resumen de características */}
                 <p className="text-xs sm:text-sm text-slate-600 mb-5 leading-relaxed">
                   {isWin
-                    ? 'Confeccionado en tela Win deportiva microperforada, ligera, transpirable y de secado rápido. Incluye bolsillos laterales con cierre reforzado.'
-                    : 'Confeccionado en tela Polistrech elástica, suave y fresca al tacto. Incluye bolsillos laterales con cierre reforzado y pretina ajustable.'}
+                    ? 'Confeccionado en tela Win deportiva microperforada, ligera, transpirable y de secado rápido con pretina elástica confortable.'
+                    : 'Confeccionado en tela Polistrech elástica, suave y fresca al tacto con pretina ajustable y costuras reforzadas.'}
                 </p>
 
                 {/* CAJA DE PRECIOS Y PROMOCIONES */}

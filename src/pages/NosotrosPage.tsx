@@ -76,13 +76,13 @@ export default function NosotrosPage() {
                 POOL STORE nació en Chiclayo con el objetivo de simplificar la compra de prendas cotidianas de alta demanda. Notamos que muchos clientes querían comprar ropa cómoda y funcional sin tener que lidiar con procesos impersonales, precios inflados o incertidumbre en la entrega.
               </p>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Comenzamos especializándonos en <strong>shorts clásicos y deportivos</strong> con una característica fundamental: bolsillos profundos con cierre para proteger el celular, llaves y billetera. Con 47 combinaciones de colores y modelos de clubes, hoy seguimos expandiendo nuestro catálogo para convertirnos en tu tienda virtual integral.
+                Comenzamos especializándonos en <strong>shorts clásicos y deportivos</strong> confeccionados en telas de alta comodidad: Polistrech suave y elástico, y tela Win microperforada de secado rápido. Con 47 combinaciones de colores y modelos de clubes, hoy seguimos expandiendo nuestro catálogo para convertirnos en tu tienda virtual integral.
               </p>
               
               <div className="pt-2 flex flex-wrap gap-2 text-xs font-bold text-slate-700">
                 <span className="px-3 py-1.5 rounded-lg bg-slate-100 flex items-center gap-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                  Precios desde S/ 25
+                  Precios desde S/ 15
                 </span>
                 <span className="px-3 py-1.5 rounded-lg bg-slate-100 flex items-center gap-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
@@ -129,7 +129,7 @@ export default function NosotrosPage() {
               </div>
               <h3 className="font-bold text-base text-slate-900">1. Calidad Real</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Solo publicamos prendas que nosotros mismos usaríamos. Revisamos las costuras, los cierres y la elasticidad de cada lote antes de comercializarlo.
+                Solo publicamos prendas que nosotros mismos usaríamos. Revisamos las costuras, los acabados y la elasticidad de cada lote antes de comercializarlo.
               </p>
             </div>
 
