@@ -1,23 +1,32 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import ScrollToTop from './components/ScrollToTop';
 import SharedModals from './components/SharedModals';
 
-// Pages
+// Critical initial page (direct load without waterfall)
 import HomePage from './pages/HomePage';
-import ProductsPage from './pages/ProductsPage';
-import RopaCategoryPage from './pages/RopaCategoryPage';
-import CatalogPage from './pages/CatalogPage';
-import ProductDetailPage from './pages/ProductDetailPage';
-import EntregasPage from './pages/EntregasPage';
-import NosotrosPage from './pages/NosotrosPage';
+
+// Lazy-loaded secondary pages
+const ProductsPage = lazy(() => import('./pages/ProductsPage'));
+const RopaCategoryPage = lazy(() => import('./pages/RopaCategoryPage'));
+const CatalogPage = lazy(() => import('./pages/CatalogPage'));
+const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'));
+const EntregasPage = lazy(() => import('./pages/EntregasPage'));
+const NosotrosPage = lazy(() => import('./pages/NosotrosPage'));
+
+const PageFallback = () => (
+  <div className="min-h-[50vh] flex items-center justify-center py-20">
+    <div className="w-7 h-7 border-2 border-slate-200 border-t-slate-900 rounded-full animate-spin" />
+  </div>
+);
 
 export default function App() {
   return (
     <CartProvider>
       <ScrollToTop />
-      <Routes>
+      <Suspense fallback={<PageFallback />}>
+        <Routes>
         {/* 1. Página de Inicio (Presentación de POOL STORE) */}
         <Route path="/" element={<HomePage />} />
 
@@ -44,6 +53,7 @@ export default function App() {
         <Route path="/catalogo" element={<Navigate to="/ropa/shorts" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      </Suspense>
       <SharedModals />
     </CartProvider>
   );

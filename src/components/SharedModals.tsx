@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useCart, PUNTOS_CENTRICOS_CHICLAYO } from '../context/CartContext';
+import { FloatingWhatsApp } from './FloatingWhatsApp';
 import { GUIA_TALLAS } from '../types';
 import {
   ShoppingBag,
@@ -777,6 +778,9 @@ export default function SharedModals() {
           </div>
         </aside>
       )}
+
+      {/* 7. BOTÓN FLOTANTE WHATSAPP CON PULSO SUAVE Y SUTIL */}
+      <FloatingWhatsApp hasCartItems={totalPrendas > 0} />
     </>
   );
 }

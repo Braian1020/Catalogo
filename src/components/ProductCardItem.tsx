@@ -10,7 +10,7 @@ interface ProductCardItemProps {
   priority?: boolean;
 }
 
-export default function ProductCardItem({ producto, priority = false }: ProductCardItemProps) {
+function ProductCardItem({ producto, priority = false }: ProductCardItemProps) {
   const { agregarAlCarrito } = useCart();
   const slug = getProductSlug(producto);
   const isWin = producto.tipoTela === 'win';
@@ -46,6 +46,10 @@ export default function ProductCardItem({ producto, priority = false }: ProductC
           src={producto.imagen}
           alt={producto.nombre}
           loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'auto'}
+          decoding="async"
+          width={280}
+          height={280}
           className="max-w-full max-h-full w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-105"
         />
       </Link>
@@ -152,3 +156,5 @@ export default function ProductCardItem({ producto, priority = false }: ProductC
     </article>
   );
 }
+
+export default React.memo(ProductCardItem);

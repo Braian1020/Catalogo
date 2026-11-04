@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useDeferredValue } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -261,8 +261,9 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
     });
   }, []);
 
-  // 3. FILTRADO INTELIGENTE
-  const q = busqueda.trim().toLowerCase();
+  // 3. FILTRADO INTELIGENTE CON TRANSICIÓN FLUIDA
+  const deferredBusqueda = useDeferredValue(busqueda);
+  const q = deferredBusqueda.trim().toLowerCase();
 
   const coloresClasicosFiltrados = useMemo(() => {
     if (categoriaActiva === 'deportivos') return [];
@@ -480,9 +481,8 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
 
                 return (
                   <article
-                    key={`${categoriaActiva}-${busqueda}-${colorShort}`}
-                    style={{ animationDelay: `${Math.min(idx * 35, 350)}ms` }}
-                    className="animate-card-stagger bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col group"
+                    key={`${categoriaActiva}-${colorShort}`}
+                    className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col group"
                   >
                     {/* FOTO CON MARGEN Y SIN RECORTAR */}
                     <div className="relative aspect-square bg-slate-50 overflow-hidden flex items-center justify-center p-4">
@@ -494,7 +494,11 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
                         <img
                           src={productoActivo.imagen}
                           alt={productoActivo.nombre}
-                          loading="lazy"
+                          loading={idx < 6 ? 'eager' : 'lazy'}
+                          fetchPriority={idx < 4 ? 'high' : 'auto'}
+                          decoding="async"
+                          width={320}
+                          height={320}
                           className="max-w-full max-h-full w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-105"
                         />
                       </Link>
@@ -674,15 +678,12 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
                   grupo.versiones.find((v) => v.id === estado.versionId) || grupo.versiones[0];
                 const productoActivo = versionActiva.producto;
 
-                const baseDelay = categoriaActiva === 'todos' && coloresClasicosFiltrados.length > 0 ? 80 : 0;
-                const delay = Math.min(baseDelay + idx * 35, 360);
                 const slugProducto = getProductSlug(productoActivo);
 
                 return (
                   <article
-                    key={`${categoriaActiva}-${busqueda}-${grupo.id}`}
-                    style={{ animationDelay: `${delay}ms` }}
-                    className="animate-card-stagger bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col group"
+                    key={`${categoriaActiva}-${grupo.id}`}
+                    className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col group"
                   >
                     {/* FOTO CON MARGEN Y SIN RECORTAR */}
                     <div className="relative aspect-square bg-slate-50 overflow-hidden flex items-center justify-center p-4">
@@ -694,7 +695,11 @@ export default function CatalogPage({ initialCategoria }: CatalogPageProps = {})
                         <img
                           src={productoActivo.imagen}
                           alt={productoActivo.nombre}
-                          loading="lazy"
+                          loading={idx < 6 ? 'eager' : 'lazy'}
+                          fetchPriority={idx < 4 ? 'high' : 'auto'}
+                          decoding="async"
+                          width={320}
+                          height={320}
                           className="max-w-full max-h-full w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-105"
                         />
                       </Link>

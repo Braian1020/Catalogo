@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useDeferredValue } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -40,7 +40,9 @@ export default function ProductsPage() {
     if (ogDesc) ogDesc.setAttribute('content', description);
   }, []);
 
-  // Filtrado reactivo de productos
+  const deferredBusqueda = useDeferredValue(busqueda);
+
+  // Filtrado reactivo de productos optimizado
   const productosFiltrados = useMemo(() => {
     let prods = [...PRODUCTOS];
 
@@ -50,8 +52,8 @@ export default function ProductsPage() {
       prods = prods.filter((p) => p.tipoTela === 'win');
     }
 
-    if (busqueda.trim()) {
-      const q = busqueda.toLowerCase().trim();
+    if (deferredBusqueda.trim()) {
+      const q = deferredBusqueda.toLowerCase().trim();
       prods = prods.filter((p) => {
         const nombre = p.nombre.toLowerCase();
         const colorShort = (p.colorShort || '').toLowerCase();
